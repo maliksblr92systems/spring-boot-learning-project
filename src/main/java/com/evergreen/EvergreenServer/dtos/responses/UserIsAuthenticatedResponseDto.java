@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLoginResponseDto {
-    private ProtectedAppUserDto user;
-    private String accessToken;
+public class UserIsAuthenticatedResponseDto {
+    ProtectedAppUserDto user;
 }

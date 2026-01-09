@@ -1,50 +1,76 @@
 package com.evergreen.EvergreenServer.models;
 
 
-import com.evergreen.EvergreenServer.security.dtos.ProtectedUserDto;
-import jakarta.persistence.*;
+import java.time.Instant;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import com.evergreen.EvergreenServer.security.dtos.ProtectedAppUserDto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 @Entity(name = "users")
 @Data
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
-public class AppUser  {
+public class AppUser {
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name",nullable = true)
+    @Column(name = "name", nullable = true)
     private String name;
 
-    @Column(name="email",nullable = true,unique = true)
+    @Column(name = "email", nullable = true, unique = true)
     private String email;
 
-    @Column(name="phone",nullable = true,unique = true)
+    @Column(name = "phone", nullable = true, unique = true)
     private String phoneNumber;
 
-    @Column(name="username",nullable = true,unique = true)
+    @Column(name = "username", nullable = true, unique = true)
     private String username;
 
-    @Column(name="password",nullable = true)
+    @Column(name = "password", nullable = true)
     private String password;
 
-    @Column(name="is_active",nullable = true)
-    private Boolean isActive;
+    @Column(name = "is_active", nullable = true)
+    private Boolean isActive = true;
 
-    public static  ProtectedUserDto getProtectedUser(AppUser appUser){
-        ProtectedUserDto protectedUserDto=new ProtectedUserDto();
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
+    private Instant createdAt;
+
+    @Column(name = "updated_at", nullable = false, updatable = true)
+    @LastModifiedDate
+    private Instant updatedAt;
+
+
+    @Override
+    public String toString() {
+        return "AppUser id=" + id + " name=" + name + " email=" + email + " username=" + username;
+    }
+
+    public static ProtectedAppUserDto getProtectedUser(AppUser appUser) {
+        ProtectedAppUserDto protectedUserDto = new ProtectedAppUserDto();
         protectedUserDto.setId(appUser.getId());
         protectedUserDto.setEmail(appUser.getEmail());
         protectedUserDto.setUsername(appUser.getUsername());
         protectedUserDto.setPhoneNumber(appUser.getPhoneNumber());
         protectedUserDto.setIsActive(appUser.getIsActive());
+        protectedUserDto.setCreatedAt(appUser.getCreatedAt());
+        protectedUserDto.setUpdatedAt(appUser.getUpdatedAt());
         return protectedUserDto;
 
     }

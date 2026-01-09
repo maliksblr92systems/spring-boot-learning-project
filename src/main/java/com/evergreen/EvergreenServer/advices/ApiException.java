@@ -1,13 +1,12 @@
 package com.evergreen.EvergreenServer.advices;
 
+import java.util.Objects;
+import org.springframework.http.HttpStatus;
 import com.evergreen.EvergreenServer.utils.ApiError;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
-
-import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -35,6 +34,12 @@ public class ApiException extends RuntimeException {
     public static ApiException unAuthenticated(String message) {
         message = Objects.equals(message, "") || message == null ? message : "UN_AUTHORIZED";
         ApiError apiError = new ApiError(message, HttpStatus.UNAUTHORIZED);
+        return new ApiException(apiError);
+    }
+
+    public static ApiException notFound(String message) {
+        message = Objects.equals(message, "") || message == null ? message : "NOT_FOUND";
+        ApiError apiError = new ApiError(message, HttpStatus.NOT_FOUND);
         return new ApiException(apiError);
     }
 }

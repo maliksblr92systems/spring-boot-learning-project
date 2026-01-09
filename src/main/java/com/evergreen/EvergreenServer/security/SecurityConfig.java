@@ -11,15 +11,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.evergreen.EvergreenServer.filters.JwtAuthenticationFilter;
 import com.evergreen.EvergreenServer.implementations.AppUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     private final AppUserDetailsService appUserDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(AppUserDetailsService appUserDetailsService) {
+    public SecurityConfig(AppUserDetailsService appUserDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.appUserDetailsService = appUserDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -28,21 +32,30 @@ public class SecurityConfig {
 
         httpSecurity.csrf(Customizer.withDefaults()).csrf((csrf) -> csrf.disable()).httpBasic((basic) -> basic.disable())
                 .formLogin((formLogin) -> formLogin.disable()).anonymous((customizer) -> customizer.disable())
+                .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/auth/login", "/api/auth/register", "/api/jobs/csv/customer")
-                        .permitAll().requestMatchers("/api/*").authenticated().anyRequest().denyAll()
+                        .permitAll().requestMatchers("/api/**").authenticated().anyRequest().denyAll()
 
 
-                );
+                ).addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         // .addFilterAfter(new CustomFilter(), AuthenticationFilter.class);
         return httpSecurity.build();
     }
 
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
-        return authenticationManager;
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
+
+
+    // @Bean
+    // public AuthenticationManager authenticationManager(AuthenticationConfiguration
+    // authenticationConfiguration) throws Exception {
+    // AuthenticationManager authenticationManager =
+    // authenticationConfiguration.getAuthenticationManager();
+    // return authenticationManager;
+    // }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -51,9 +64,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(appUserDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(appUserDetailsService);
         return daoAuthenticationProvider;
     }
 }

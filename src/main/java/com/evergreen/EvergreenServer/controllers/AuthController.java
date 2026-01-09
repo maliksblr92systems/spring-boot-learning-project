@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.evergreen.EvergreenServer.dtos.requests.RegisterUserRequestDto;
 import com.evergreen.EvergreenServer.dtos.requests.RegisterUserResponseDto;
 import com.evergreen.EvergreenServer.dtos.requests.UserLoginRequestDto;
+import com.evergreen.EvergreenServer.dtos.responses.UserIsAuthenticatedResponseDto;
 import com.evergreen.EvergreenServer.dtos.responses.UserLoginResponseDto;
 import com.evergreen.EvergreenServer.services.AppUserService;
 import jakarta.validation.Valid;
@@ -35,11 +36,13 @@ public class AuthController {
     public ResponseEntity<RegisterUserResponseDto> register(@RequestBody @Valid RegisterUserRequestDto request) {
         RegisterUserResponseDto response = this.appUserService.registerUser(request);
         return new ResponseEntity<RegisterUserResponseDto>(response, HttpStatus.OK);
-
     }
 
-    @GetMapping("/me")
-    public String me() {
-        return "Me";
+    @GetMapping("/is-authenticated")
+    public ResponseEntity<UserIsAuthenticatedResponseDto> isAuthenticated() {
+        UserIsAuthenticatedResponseDto response = this.appUserService.isAuthenticated();
+        return new ResponseEntity<UserIsAuthenticatedResponseDto>(response, HttpStatus.OK);
+
+
     }
 }
