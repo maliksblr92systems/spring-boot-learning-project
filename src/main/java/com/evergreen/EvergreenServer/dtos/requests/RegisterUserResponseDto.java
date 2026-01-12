@@ -1,7 +1,7 @@
 package com.evergreen.EvergreenServer.dtos.requests;
 
 
-import com.evergreen.EvergreenServer.security.dtos.ProtectedAppUserDto;
+import com.evergreen.EvergreenServer.dtos.entity.AppUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
 public class RegisterUserResponseDto {
-    public ProtectedAppUserDto user;
+    public AppUserDto user;
     public String accessToken;
 }

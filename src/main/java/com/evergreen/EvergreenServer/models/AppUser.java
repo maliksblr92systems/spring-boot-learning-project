@@ -5,7 +5,6 @@ import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import com.evergreen.EvergreenServer.security.dtos.ProtectedAppUserDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -62,18 +61,6 @@ public class AppUser {
         return "AppUser id=" + id + " name=" + name + " email=" + email + " username=" + username;
     }
 
-    public static ProtectedAppUserDto getProtectedUser(AppUser appUser) {
-        ProtectedAppUserDto protectedUserDto = new ProtectedAppUserDto();
-        protectedUserDto.setId(appUser.getId());
-        protectedUserDto.setEmail(appUser.getEmail());
-        protectedUserDto.setUsername(appUser.getUsername());
-        protectedUserDto.setPhoneNumber(appUser.getPhoneNumber());
-        protectedUserDto.setIsActive(appUser.getIsActive());
-        protectedUserDto.setCreatedAt(appUser.getCreatedAt());
-        protectedUserDto.setUpdatedAt(appUser.getUpdatedAt());
-        return protectedUserDto;
-
-    }
 
 
 }

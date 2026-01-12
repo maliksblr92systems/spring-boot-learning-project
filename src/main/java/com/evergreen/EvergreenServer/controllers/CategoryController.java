@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.evergreen.EvergreenServer.dtos.entity.CategoryDto;
 import com.evergreen.EvergreenServer.dtos.requests.category.CreateCategoryRequestDto;
-import com.evergreen.EvergreenServer.dtos.requests.category.CreateCategoryResponseDto;
 import com.evergreen.EvergreenServer.dtos.requests.category.UpdateCategoryByIdRequestDto;
-import com.evergreen.EvergreenServer.models.Category;
 import com.evergreen.EvergreenServer.services.CategoryService;
 import jakarta.validation.Valid;
 
@@ -33,34 +32,34 @@ public class CategoryController {
 
 
     @PostMapping("")
-    public ResponseEntity<CreateCategoryResponseDto> createCategory(@RequestBody @Valid CreateCategoryRequestDto request) {
-        CreateCategoryResponseDto response = this.categoryService.createCategory(request);
-        return new ResponseEntity<CreateCategoryResponseDto>(response, HttpStatus.CREATED);
+    public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CreateCategoryRequestDto request) {
+        CategoryDto response = this.categoryService.createCategory(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> response = this.categoryService.getAll();
-        return new ResponseEntity<List<Category>>(response, HttpStatus.OK);
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        List<CategoryDto> response = this.categoryService.getAll();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable(name = "id") int id) {
-        Category response = this.categoryService.getById(id);
-        return new ResponseEntity<Category>(response, HttpStatus.OK);
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable(name = "id") int id) {
+        CategoryDto response = this.categoryService.getById(id);
+        return new ResponseEntity<CategoryDto>(response, HttpStatus.OK);
     }
 
     @PutMapping("")
-    public ResponseEntity<Category> updateById(@RequestBody @Valid UpdateCategoryByIdRequestDto request) {
-        Category response = this.categoryService.updateById(request);
-        return new ResponseEntity<Category>(response, HttpStatus.OK);
+    public ResponseEntity<CategoryDto> updateById(@RequestBody @Valid UpdateCategoryByIdRequestDto request) {
+        CategoryDto response = this.categoryService.updateById(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteById(@PathVariable(name = "id") int id) {
         int response = this.categoryService.deleteById(id);
 
-        return new ResponseEntity<Integer>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
 

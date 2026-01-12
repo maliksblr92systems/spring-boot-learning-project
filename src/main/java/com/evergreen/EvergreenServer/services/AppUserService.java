@@ -14,6 +14,7 @@ import com.evergreen.EvergreenServer.dtos.requests.RegisterUserResponseDto;
 import com.evergreen.EvergreenServer.dtos.requests.UserLoginRequestDto;
 import com.evergreen.EvergreenServer.dtos.responses.UserIsAuthenticatedResponseDto;
 import com.evergreen.EvergreenServer.dtos.responses.UserLoginResponseDto;
+import com.evergreen.EvergreenServer.mappers.AppUserMapper;
 import com.evergreen.EvergreenServer.models.AppUser;
 import com.evergreen.EvergreenServer.repositories.AppUserRepository;
 import com.evergreen.EvergreenServer.security.JwtService;
@@ -26,6 +27,9 @@ public class AppUserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private AppUserMapper appUserMapper;
 
     @Autowired
     private JwtService jwtService;
@@ -49,7 +53,7 @@ public class AppUserService {
 
         String accessToken = jwtService.generateJwtToken(appUser);
         UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto();
-        userLoginResponseDto.setUser(AppUser.getProtectedUser(appUser));
+        userLoginResponseDto.setUser(appUserMapper.toDto(appUser));
         userLoginResponseDto.setAccessToken(accessToken);
         return userLoginResponseDto;
 
@@ -77,7 +81,7 @@ public class AppUserService {
             throw ApiException.unAuthenticated("Not authenticated");
         }
         String accessToken = jwtService.generateJwtToken(newAppUser);
-        return RegisterUserResponseDto.build(AppUser.getProtectedUser(newAppUser), accessToken);
+        return RegisterUserResponseDto.build(appUserMapper.toDto(newAppUser), accessToken);
 
     }
 
@@ -85,7 +89,7 @@ public class AppUserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetail userPrincipal = (CustomUserDetail) authentication.getPrincipal();
         AppUser appUser = appUserRepository.findByEmail(userPrincipal.getUsername());
-        return new UserIsAuthenticatedResponseDto(AppUser.getProtectedUser(appUser));
+        return new UserIsAuthenticatedResponseDto(appUserMapper.toDto(appUser));
 
 
 

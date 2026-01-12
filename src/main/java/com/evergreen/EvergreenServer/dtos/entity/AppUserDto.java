@@ -1,22 +1,31 @@
-package com.evergreen.EvergreenServer.security.dtos;
+package com.evergreen.EvergreenServer.dtos.entity;
 
 import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
-@AllArgsConstructor(staticName = "build")
+@AllArgsConstructor
 @NoArgsConstructor
-public class ProtectedAppUserDto {
+public class AppUserDto {
 
-    private Integer id;
+    private int id;
+
+    private String name;
+
     private String email;
-    private String username;
+
     private String phoneNumber;
+
+    private String username;
+
+    private String password;
+
     private Boolean isActive;
+
     private Instant createdAt;
+
     private Instant updatedAt;
 
 
