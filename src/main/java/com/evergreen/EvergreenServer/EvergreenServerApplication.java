@@ -2,12 +2,20 @@ package com.evergreen.EvergreenServer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class EvergreenServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EvergreenServerApplication.class, args);
+        show();
+    }
+
+
+    public static void show() {
+        System.out.println(":::::::::::::::::::::::::::::::::");
     }
 
 }
