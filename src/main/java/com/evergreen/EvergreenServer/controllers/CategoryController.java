@@ -39,8 +39,7 @@ public class CategoryController {
 
     @GetMapping("")
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        List<CategoryDto> response = this.categoryService.getAll();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(this.categoryService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

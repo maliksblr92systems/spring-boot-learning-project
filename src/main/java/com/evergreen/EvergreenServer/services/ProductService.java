@@ -1,23 +1,29 @@
 package com.evergreen.EvergreenServer.services;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.evergreen.EvergreenServer.advices.ApiException;
 import com.evergreen.EvergreenServer.dtos.entity.ProductDto;
+import com.evergreen.EvergreenServer.dtos.requests.product.CreateProductRequestDto;
 import com.evergreen.EvergreenServer.mappers.ProductMapper;
+import com.evergreen.EvergreenServer.models.Category;
 import com.evergreen.EvergreenServer.models.Product;
+import com.evergreen.EvergreenServer.repositories.CategoryRepository;
 import com.evergreen.EvergreenServer.repositories.ProductRepository;
 
 @Service
 public class ProductService {
 
-    public final ProductRepository productRepository;
-    public final ProductMapper productMapper;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
 
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper, CategoryRepository categoryRepository) {
         this.productMapper = productMapper;
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ProductDto> getAllProducts() {
@@ -26,7 +32,7 @@ public class ProductService {
     }
 
     public List<ProductDto> getByCategory(int categoryId) {
-        List<Product> products = this.productRepository.findByCategory(categoryId);
+        List<Product> products = this.productRepository.findByCategoryId(categoryId);
         return productMapper.toDtosList(products);
     }
 
@@ -37,8 +43,28 @@ public class ProductService {
         return productDto;
     }
 
-    public ProductDto createProduct(CreateProductRequestDto){
-        this.productRepository.save();
+    public ProductDto createProduct(CreateProductRequestDto requestDto) {
+        String name = requestDto.getName();
+        Optional<Product> productWithNameExists = this.productRepository.findByName(name);
+        if (productWithNameExists.get() != null) {
+            throw ApiException.badRequest("Product with name " + name + " already exists");
+        }
+        String description = requestDto.getDescription();
+        int categoryId = requestDto.getCategoryId();
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> {
+            throw ApiException.notFound("Category not found.");
+        });
+        Product newProduct = new Product();
+        newProduct.setCategory(category);
+        newProduct.setName(name);
+        newProduct.setDescription(description);
+        newProduct = this.productRepository.save(newProduct);
+        System.out.println("========================================");
+        System.out.println("========================================");
+        System.out.println("========================================");
+        System.out.println("========================================");
+
+        return productMapper.toDto(newProduct);
     }
 
 

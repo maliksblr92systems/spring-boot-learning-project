@@ -1,7 +1,6 @@
 package com.evergreen.EvergreenServer.dtos.entity;
 
 import java.time.Instant;
-import com.evergreen.EvergreenServer.models.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductDto {
 
-    private Integer id;
+    private int id;
     private String name;
     private String description;
-    private Category category;
+    private String thumbnail;
+    private CategoryDto category;
     private Instant createdAt;
     private Instant updatedAt;
 }

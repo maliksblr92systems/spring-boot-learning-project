@@ -3,9 +3,11 @@ package com.evergreen.EvergreenServer.models;
 import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,10 +20,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "products")
-@Table(name = "entity")
+@Table(name = "products")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
 
     @Id
@@ -35,13 +38,14 @@ public class Product {
     private String description;
 
 
-    @Column(name = "thubmnail", nullable = false)
-    private String thubmnail;
+    @Column(name = "thumbnail", nullable = true)
+    private String thumbnail;
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "product_category_fk"))
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "product_category_fk"), nullable = false)
     private Category category;
+
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
