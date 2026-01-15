@@ -40,6 +40,12 @@ dependencies {
     implementation ("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.8.0")
 // ShedLock end 
 
+// Swagger 
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+// Swagger 
+
+
+
 
 
 

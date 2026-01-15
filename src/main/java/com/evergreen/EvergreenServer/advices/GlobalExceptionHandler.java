@@ -1,39 +1,60 @@
 package com.evergreen.EvergreenServer.advices;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.evergreen.EvergreenServer.utils.ApiError;
+import io.jsonwebtoken.security.SignatureException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<?> handleApiErrorException(ApiException apiException) {
-        HttpStatus httpStatus = apiException.getApiError().getHttpStatus();
-        String message = apiException.getApiError().getMessage();
-        int status = apiException.getApiError().getHttpCode();
-        return new ResponseEntity<>(new ApiError(message, httpStatus), httpStatus);
+        HttpStatus httpStatus = apiException.getHttpStatus();
+        String error = apiException.getApiError().getError();
+        return new ResponseEntity<>(new ApiError(error), httpStatus);
+    }
+
+
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<?> handleBadCredentialsException(UsernameNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiError(ex.getMessage()));
+
     }
 
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
-        return new ResponseEntity<>(new ApiError(ex.getMessage(), HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiError(ex.getMessage()));
 
     }
 
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception ex) {
-        System.out.println("====================================");
-        System.out.println("ex" + ex.getClass().getName());
-        System.out.println("====================================");
-        return new ResponseEntity<>(new ApiError(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("Unhandled exception occurred", ex);
+        return ResponseEntity.internalServerError().body(new ApiError(ex.getMessage()));
+
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<?> handleSignatureException(SignatureException ex) {
+        log.error("Unhandled [SignatureException] occurred", ex);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiError(ex.getMessage()));
 
     }
 
@@ -41,14 +62,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         List<String> errorsList =
                 ex.getBindingResult().getFieldErrors().stream().map(error -> error.getField() + " " + error.getDefaultMessage()).toList();
-        return new ResponseEntity<>(new ApiError(errorsList, HttpStatus.UNPROCESSABLE_ENTITY), HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.unprocessableEntity().body(new ApiError(errorsList));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         Throwable root = ex.getRootCause() == null ? ex : ex.getRootCause();
-        String message = root.getMessage().replace("ERROR", "").replace("Detail", "");
-        return new ResponseEntity<>(new ApiError(message, HttpStatus.CONFLICT), HttpStatus.CONFLICT);
+        String error = root.getMessage().replace("ERROR", "").replace("Detail", "");
+        return new ResponseEntity<>(new ApiError(error), HttpStatus.CONFLICT);
     }
 }
 

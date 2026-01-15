@@ -46,9 +46,10 @@ public class ProductService {
     public ProductDto createProduct(CreateProductRequestDto requestDto) {
         String name = requestDto.getName();
         Optional<Product> productWithNameExists = this.productRepository.findByName(name);
-        if (productWithNameExists.get() != null) {
+        if (productWithNameExists.isPresent()) {
             throw ApiException.badRequest("Product with name " + name + " already exists");
         }
+
         String description = requestDto.getDescription();
         int categoryId = requestDto.getCategoryId();
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> {
@@ -59,10 +60,6 @@ public class ProductService {
         newProduct.setName(name);
         newProduct.setDescription(description);
         newProduct = this.productRepository.save(newProduct);
-        System.out.println("========================================");
-        System.out.println("========================================");
-        System.out.println("========================================");
-        System.out.println("========================================");
 
         return productMapper.toDto(newProduct);
     }

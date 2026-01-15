@@ -5,20 +5,23 @@ import org.springframework.http.HttpStatus;
 import com.evergreen.EvergreenServer.utils.ApiError;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Getter
-@Setter
 
 public class ApiException extends RuntimeException {
     private final ApiError apiError;
+    private HttpStatus httpStatus;
 
     public ApiException(ApiError apiError) {
-        super(apiError.getMessage());
+        super(apiError.getError());
         this.apiError = apiError;
+    }
+
+    public ApiException(ApiError apiError, HttpStatus httpStatus) {
+        super(apiError.getError());
+        this.apiError = apiError;
+        this.httpStatus = httpStatus;
     }
 
     public ApiError getApiError() {
@@ -26,20 +29,26 @@ public class ApiException extends RuntimeException {
     }
 
 
-    public static ApiException badRequest(String message) {
-        ApiError apiError = new ApiError(message, HttpStatus.CONFLICT);
-        return new ApiException(apiError);
+    public static ApiException badRequest(String error) {
+        ApiError apiError = new ApiError(error);
+        return new ApiException(apiError, HttpStatus.BAD_REQUEST);
     }
 
-    public static ApiException unAuthenticated(String message) {
-        message = Objects.equals(message, "") || message == null ? message : "UN_AUTHORIZED";
-        ApiError apiError = new ApiError(message, HttpStatus.UNAUTHORIZED);
-        return new ApiException(apiError);
+    public static ApiException unAuthenticated(String error) {
+        // error = Objects.equals(error, "") || error == null ? error : "UN_AUTHORIZED";
+        ApiError apiError = new ApiError(error);
+        return new ApiException(apiError, HttpStatus.UNAUTHORIZED);
     }
 
-    public static ApiException notFound(String message) {
-        message = Objects.equals(message, "") || message == null ? message : "NOT_FOUND";
-        ApiError apiError = new ApiError(message, HttpStatus.NOT_FOUND);
-        return new ApiException(apiError);
+    public static ApiException notFound(String error) {
+        error = Objects.equals(error, "") || error == null ? error : "NOT_FOUND";
+        ApiError apiError = new ApiError(error);
+        return new ApiException(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    public static ApiException internalServerError(String error) {
+        error = Objects.equals(error, "") || error == null ? error : "NOT_FOUND";
+        ApiError apiError = new ApiError(error);
+        return new ApiException(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

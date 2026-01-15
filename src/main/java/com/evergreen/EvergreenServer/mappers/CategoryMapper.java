@@ -9,11 +9,11 @@ import com.evergreen.EvergreenServer.models.Category;
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
 
+    @Mapping(target = "products", ignore = true)
     Category toEntity(CategoryDto categoryDto);
 
     List<Category> toEntityList(List<CategoryDto> categoriesDtos);
 
-    @Mapping(target = "products", ignore = true)
     CategoryDto toDto(Category category);
 
     List<CategoryDto> toDtoList(List<Category> categories);

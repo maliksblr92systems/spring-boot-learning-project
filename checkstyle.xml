@@ -12,7 +12,7 @@
         <module name="NeedBraces"/>
         <module name="AvoidStarImport"/>
         <module name="LineLength">
-            <property name="max" value="120"/>
+            <property name="max" value="80"/>
         </module>
     </module>
 </module>

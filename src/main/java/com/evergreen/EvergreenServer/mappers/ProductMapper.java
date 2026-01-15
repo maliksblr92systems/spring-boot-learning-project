@@ -6,7 +6,7 @@ import org.mapstruct.Mapping;
 import com.evergreen.EvergreenServer.dtos.entity.ProductDto;
 import com.evergreen.EvergreenServer.models.Product;
 
-@Mapper(componentModel = "spring", uses = CategoryMapper.class)
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class})
 public interface ProductMapper {
 
     Product toEntity(ProductDto productDto);
