@@ -16,6 +16,8 @@ public class ProductDto {
     private String description;
     private String thumbnail;
     private CategoryDto category;
+    private int stock;
+    private double price;
     private Instant createdAt;
     private Instant updatedAt;
 }

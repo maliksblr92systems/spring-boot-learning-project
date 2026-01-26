@@ -23,6 +23,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleApiErrorException(ApiException apiException) {
         HttpStatus httpStatus = apiException.getHttpStatus();
         String error = apiException.getApiError().getError();
+        System.out.println("============================================");
+        System.out.println(error);
+        System.out.println("============================================");
+
         return new ResponseEntity<>(new ApiError(error), httpStatus);
     }
 

@@ -41,13 +41,13 @@ public class ApiException extends RuntimeException {
     }
 
     public static ApiException notFound(String error) {
-        error = Objects.equals(error, "") || error == null ? error : "NOT_FOUND";
+        error = Objects.equals(error, "") || error == null ? "NOT_FOUND" : error;
         ApiError apiError = new ApiError(error);
         return new ApiException(apiError, HttpStatus.NOT_FOUND);
     }
 
     public static ApiException internalServerError(String error) {
-        error = Objects.equals(error, "") || error == null ? error : "NOT_FOUND";
+        error = Objects.equals(error, "") || error == null ? "INTERNAL_SERVER_ERROR" : error;
         ApiError apiError = new ApiError(error);
         return new ApiException(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }

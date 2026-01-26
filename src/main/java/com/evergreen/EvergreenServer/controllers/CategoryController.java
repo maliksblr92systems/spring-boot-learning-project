@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.evergreen.EvergreenServer.dtos.entity.CategoryDto;
 import com.evergreen.EvergreenServer.dtos.requests.category.CreateCategoryRequestDto;
 import com.evergreen.EvergreenServer.dtos.requests.category.UpdateCategoryByIdRequestDto;
-import com.evergreen.EvergreenServer.services.CategoryService;
+import com.evergreen.EvergreenServer.services.category.CategoryService;
+import com.evergreen.EvergreenServer.services.implementations.ICategoryService;
 import jakarta.validation.Valid;
 
 
@@ -23,17 +24,16 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/category")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final ICategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
 
-
     @PostMapping("")
     public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CreateCategoryRequestDto request) {
-        CategoryDto response = this.categoryService.createCategory(request);
+        CategoryDto response = this.categoryService.create(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -44,19 +44,19 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable(name = "id") int id) {
-        CategoryDto response = this.categoryService.getById(id);
+        CategoryDto response = this.categoryService.getOne(id);
         return new ResponseEntity<CategoryDto>(response, HttpStatus.OK);
     }
 
     @PutMapping("")
     public ResponseEntity<CategoryDto> updateById(@RequestBody @Valid UpdateCategoryByIdRequestDto request) {
-        CategoryDto response = this.categoryService.updateById(request);
+        CategoryDto response = this.categoryService.update(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteById(@PathVariable(name = "id") int id) {
-        int response = this.categoryService.deleteById(id);
+        int response = this.categoryService.delete(id);
 
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }

@@ -1,4 +1,4 @@
-package com.evergreen.EvergreenServer.services;
+package com.evergreen.EvergreenServer.services.category;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -9,9 +9,10 @@ import com.evergreen.EvergreenServer.dtos.requests.category.UpdateCategoryByIdRe
 import com.evergreen.EvergreenServer.mappers.CategoryMapper;
 import com.evergreen.EvergreenServer.models.Category;
 import com.evergreen.EvergreenServer.repositories.CategoryRepository;
+import com.evergreen.EvergreenServer.services.implementations.ICategoryService;
 
 @Service
-public class CategoryService {
+public class CategoryService implements ICategoryService {
 
 
     private final CategoryRepository categoryRepository;
@@ -22,7 +23,7 @@ public class CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    public CategoryDto createCategory(CreateCategoryRequestDto request) {
+    public CategoryDto create(CreateCategoryRequestDto request) {
         String name = request.getName();
         Category newCategory = new Category();
         newCategory.setName(name);
@@ -36,12 +37,12 @@ public class CategoryService {
 
     }
 
-    public CategoryDto getById(int id) {
+    public CategoryDto getOne(int id) {
         Category category = this.categoryRepository.findById(id).orElseThrow(() -> ApiException.notFound("Category not found."));
         return categoryMapper.toDto(category);
     }
 
-    public CategoryDto updateById(UpdateCategoryByIdRequestDto request) {
+    public CategoryDto update(UpdateCategoryByIdRequestDto request) {
         int id = request.getId();
         String name = request.getName();
         Category category = this.categoryRepository.findById(id).orElseThrow(() -> ApiException.notFound("Category not found."));
@@ -50,11 +51,12 @@ public class CategoryService {
         return categoryMapper.toDto(category);
     }
 
-    public int deleteById(int id) {
+    public int delete(int id) {
         this.categoryRepository.findById(id).ifPresentOrElse(categoryRepository::delete, () -> {
             throw ApiException.notFound("Category not found.");
         });
         return id;
     }
+
 
 }

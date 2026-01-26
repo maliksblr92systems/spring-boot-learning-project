@@ -59,6 +59,8 @@ public class ProductService {
         newProduct.setCategory(category);
         newProduct.setName(name);
         newProduct.setDescription(description);
+        newProduct.setPrice(requestDto.getPrice());
+        newProduct.setStock(requestDto.getStock());
         newProduct = this.productRepository.save(newProduct);
 
         return productMapper.toDto(newProduct);

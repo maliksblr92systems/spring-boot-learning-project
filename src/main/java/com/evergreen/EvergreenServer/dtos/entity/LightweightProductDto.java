@@ -15,6 +15,8 @@ public class LightweightProductDto {
     private String name;
     private String description;
     private String thumbnail;
+    private int stock;
+    private double price;
     private Instant createdAt;
     private Instant updatedAt;
 }

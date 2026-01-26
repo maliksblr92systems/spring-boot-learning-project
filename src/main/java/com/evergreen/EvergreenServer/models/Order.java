@@ -4,10 +4,10 @@ import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,41 +19,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "products")
-@Table(name = "products")
+@Entity(name = "orders")
+@Table(name = "orders")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Product {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "order_user_fk"), nullable = false)
+    private AppUser user;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "order_product_fk"), nullable = false)
+    private Product product;
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
 
-    @Column(name = "price", nullable = false)
-    private double price;
-
-
-    @Column(name = "stock", nullable = false)
-    private int stock;
-
-
-    @Column(name = "thumbnail", nullable = true)
-    private String thumbnail;
-
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "product_category_fk"), nullable = false)
-    private Category category;
-
+    @Column(name = "amount", nullable = false)
+    private double amount;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
