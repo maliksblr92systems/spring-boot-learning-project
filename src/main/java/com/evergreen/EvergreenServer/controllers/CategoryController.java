@@ -15,7 +15,7 @@ import com.evergreen.EvergreenServer.dtos.entity.CategoryDto;
 import com.evergreen.EvergreenServer.dtos.requests.category.CreateCategoryRequestDto;
 import com.evergreen.EvergreenServer.dtos.requests.category.UpdateCategoryByIdRequestDto;
 import com.evergreen.EvergreenServer.services.category.CategoryService;
-import com.evergreen.EvergreenServer.services.implementations.ICategoryService;
+import com.evergreen.EvergreenServer.services.category.ICategoryService;
 import jakarta.validation.Valid;
 
 

@@ -9,7 +9,6 @@ import com.evergreen.EvergreenServer.dtos.requests.category.UpdateCategoryByIdRe
 import com.evergreen.EvergreenServer.mappers.CategoryMapper;
 import com.evergreen.EvergreenServer.models.Category;
 import com.evergreen.EvergreenServer.repositories.CategoryRepository;
-import com.evergreen.EvergreenServer.services.implementations.ICategoryService;
 
 @Service
 public class CategoryService implements ICategoryService {

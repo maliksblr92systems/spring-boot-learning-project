@@ -1,4 +1,4 @@
-package com.evergreen.EvergreenServer.services.implementations;
+package com.evergreen.EvergreenServer.services.category;
 
 import java.util.List;
 import com.evergreen.EvergreenServer.dtos.entity.CategoryDto;

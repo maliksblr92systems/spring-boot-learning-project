@@ -1,4 +1,4 @@
-package com.evergreen.EvergreenServer.services.order.implementations;
+package com.evergreen.EvergreenServer.services.order;
 
 import java.util.List;
 import com.evergreen.EvergreenServer.dtos.entity.OrderDto;

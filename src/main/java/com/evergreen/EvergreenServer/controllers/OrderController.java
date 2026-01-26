@@ -1,6 +1,7 @@
 package com.evergreen.EvergreenServer.controllers;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.evergreen.EvergreenServer.dtos.entity.OrderDto;
 import com.evergreen.EvergreenServer.dtos.requests.order.CreateOrderRequestDto;
-import com.evergreen.EvergreenServer.services.order.implementations.IOrderService;
+import com.evergreen.EvergreenServer.services.order.IOrderService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -21,7 +22,7 @@ public class OrderController {
     private final IOrderService orderService;
 
 
-    public OrderController(IOrderService orderService) {
+    public OrderController(@Qualifier("orderService") IOrderService orderService) {
         this.orderService = orderService;
     }
 
