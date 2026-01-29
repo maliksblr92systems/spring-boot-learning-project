@@ -1,0 +1,39 @@
+{
+  
+
+ 
+  // "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
+  // "java.compile.nullAnalysis.mode": "automatic",
+  // "java.debug.settings.onBuildFailureProceed": true,
+  // "java.format.settings.profile": "GoogleStyle",
+  // "java.format.settings.url": "${workspaceFolder}/eclipse-java-google-style.xml",
+  // //  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+
+  // "java.configuration.runtimes": [
+  //   {
+  //     "name": "JavaSE-21",
+  //     "path": "/usr/lib/jvm/java-21-openjdk-amd64",
+  //     "default": true
+  //   }
+  // ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "redhat.java",
+   "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  },
+  
+  "sqltools.connections": [
+    {
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "local_evergreen_test_db",
+      "database": "evergreen_test_db",
+      "username": "evergreen_test_user",
+      "password": "Google@123"
+    }
+  ]
+
+}

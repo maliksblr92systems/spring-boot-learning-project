@@ -1,0 +1,3 @@
+rootProject.name = 'evergreen-microservices'
+include("evergreen-auth-service")
+// include("evergreen-payment-service")

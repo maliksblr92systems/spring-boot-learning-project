@@ -1,0 +1,27 @@
+ql (18.1 (Ubuntu 18.1-1.pgdg24.04+2))
+Type "help" for help.
+
+
+# login psql as super user # postgres
+sudo -i -u postgres psql
+
+# create database
+create database evergreen_test_db;
+
+# create user
+create user evergreen_test_user with password 'Google@123';
+
+#grant privileges to user
+
+grant connect on database evergreen_test_db to evergreen_test_user;
+grant usage on schema public to evergreen_test_user;
+grant all privileges on database evergreen_test_db to evergreen_test_user;
+
+#  grant permissions for flywaydb
+
+/c evergreen_test_db
+alter schema public owner to evergreen_test_user;
+
+
+-- grant all privileges on the schema
+grant all privileges on schema public to evergreen_test_user;
