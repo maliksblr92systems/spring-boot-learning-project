@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.evergreen.lib";
+option java_multiple_files = true;
+
+service ProductService {
+    rpc ValidateStock(ValidateStockRequest) returns (ValidateStockResponse);
+}
+
+message ValidateStockRequest {
+    int32 productId = 1;
+    int32 quantity = 2;
+}
+
+message ValidateStockResponse {
+    bool available = 1;
+}

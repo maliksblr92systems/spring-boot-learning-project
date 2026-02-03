@@ -1,0 +1,569 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ahmad
+      changes:
+        # ----------------------------
+        # Spring Batch Tables
+        # ----------------------------
+        - createTable:
+            tableName: BATCH_JOB_INSTANCE
+            columns:
+              - column:
+                  name: JOB_INSTANCE_ID
+                  type: BIGINT
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: VERSION
+                  type: BIGINT
+              - column:
+                  name: JOB_NAME
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: JOB_KEY
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: BATCH_JOB_INSTANCE
+            columnNames: JOB_NAME, JOB_KEY
+            constraintName: JOB_INST_UN
+
+        - createTable:
+            tableName: BATCH_JOB_EXECUTION
+            columns:
+              - column:
+                  name: JOB_EXECUTION_ID
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: VERSION
+                  type: BIGINT
+              - column:
+                  name: JOB_INSTANCE_ID
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CREATE_TIME
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: START_TIME
+                  type: TIMESTAMP
+              - column:
+                  name: END_TIME
+                  type: TIMESTAMP
+              - column:
+                  name: STATUS
+                  type: VARCHAR(10)
+              - column:
+                  name: EXIT_CODE
+                  type: VARCHAR(2500)
+              - column:
+                  name: EXIT_MESSAGE
+                  type: VARCHAR(2500)
+              - column:
+                  name: LAST_UPDATED
+                  type: TIMESTAMP
+        - addForeignKeyConstraint:
+            baseTableName: BATCH_JOB_EXECUTION
+            baseColumnNames: JOB_INSTANCE_ID
+            referencedTableName: BATCH_JOB_INSTANCE
+            referencedColumnNames: JOB_INSTANCE_ID
+            constraintName: JOB_INST_EXEC_FK
+
+        - createTable:
+            tableName: BATCH_JOB_EXECUTION_PARAMS
+            columns:
+              - column:
+                  name: JOB_EXECUTION_ID
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PARAMETER_NAME
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PARAMETER_TYPE
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PARAMETER_VALUE
+                  type: VARCHAR(2500)
+              - column:
+                  name: IDENTIFYING
+                  type: CHAR(1)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: BATCH_JOB_EXECUTION_PARAMS
+            baseColumnNames: JOB_EXECUTION_ID
+            referencedTableName: BATCH_JOB_EXECUTION
+            referencedColumnNames: JOB_EXECUTION_ID
+            constraintName: JOB_EXEC_PARAMS_FK
+
+        - createTable:
+            tableName: BATCH_STEP_EXECUTION
+            columns:
+              - column:
+                  name: STEP_EXECUTION_ID
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: VERSION
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: STEP_NAME
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: JOB_EXECUTION_ID
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CREATE_TIME
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: START_TIME
+                  type: TIMESTAMP
+              - column:
+                  name: END_TIME
+                  type: TIMESTAMP
+              - column:
+                  name: STATUS
+                  type: VARCHAR(10)
+              - column:
+                  name: COMMIT_COUNT
+                  type: BIGINT
+              - column:
+                  name: READ_COUNT
+                  type: BIGINT
+              - column:
+                  name: FILTER_COUNT
+                  type: BIGINT
+              - column:
+                  name: WRITE_COUNT
+                  type: BIGINT
+              - column:
+                  name: READ_SKIP_COUNT
+                  type: BIGINT
+              - column:
+                  name: WRITE_SKIP_COUNT
+                  type: BIGINT
+              - column:
+                  name: PROCESS_SKIP_COUNT
+                  type: BIGINT
+              - column:
+                  name: ROLLBACK_COUNT
+                  type: BIGINT
+              - column:
+                  name: EXIT_CODE
+                  type: VARCHAR(2500)
+              - column:
+                  name: EXIT_MESSAGE
+                  type: VARCHAR(2500)
+              - column:
+                  name: LAST_UPDATED
+                  type: TIMESTAMP
+        - addForeignKeyConstraint:
+            baseTableName: BATCH_STEP_EXECUTION
+            baseColumnNames: JOB_EXECUTION_ID
+            referencedTableName: BATCH_JOB_EXECUTION
+            referencedColumnNames: JOB_EXECUTION_ID
+            constraintName: JOB_EXEC_STEP_FK
+
+        - createTable:
+            tableName: BATCH_STEP_EXECUTION_CONTEXT
+            columns:
+              - column:
+                  name: STEP_EXECUTION_ID
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: SHORT_CONTEXT
+                  type: VARCHAR(2500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: SERIALIZED_CONTEXT
+                  type: TEXT
+        - addForeignKeyConstraint:
+            baseTableName: BATCH_STEP_EXECUTION_CONTEXT
+            baseColumnNames: STEP_EXECUTION_ID
+            referencedTableName: BATCH_STEP_EXECUTION
+            referencedColumnNames: STEP_EXECUTION_ID
+            constraintName: STEP_EXEC_CTX_FK
+
+        - createTable:
+            tableName: BATCH_JOB_EXECUTION_CONTEXT
+            columns:
+              - column:
+                  name: JOB_EXECUTION_ID
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: SHORT_CONTEXT
+                  type: VARCHAR(2500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: SERIALIZED_CONTEXT
+                  type: TEXT
+        - addForeignKeyConstraint:
+            baseTableName: BATCH_JOB_EXECUTION_CONTEXT
+            baseColumnNames: JOB_EXECUTION_ID
+            referencedTableName: BATCH_JOB_EXECUTION
+            referencedColumnNames: JOB_EXECUTION_ID
+            constraintName: JOB_EXEC_CTX_FK
+
+        # ----------------------------
+        # Sequences
+        # ----------------------------
+        - createSequence:
+            sequenceName: BATCH_STEP_EXECUTION_SEQ
+            maxValue: 9223372036854775807
+            cycle: false
+        - createSequence:
+            sequenceName: BATCH_JOB_EXECUTION_SEQ
+            maxValue: 9223372036854775807
+            cycle: false
+        - createSequence:
+            sequenceName: BATCH_JOB_SEQ
+            maxValue: 9223372036854775807
+            cycle: false
+
+        # ----------------------------
+        # Application tables
+        # ----------------------------
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(355)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: phone
+                  type: VARCHAR(255)
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  name: age
+                  type: INTEGER
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(355)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: phone
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValue: true
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: thumbnail
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: shedlock
+            columns:
+              - column:
+                  name: name
+                  type: VARCHAR(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: lock_until
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: locked_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: locked_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stock
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: thumbnail
+                  type: VARCHAR(255)
+              - column:
+                  name: category_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: products
+            baseColumnNames: category_id
+            referencedTableName: categories
+            referencedColumnNames: id
+            constraintName: product_category_fk
+
+
+
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+                    
+        - addForeignKeyConstraint:
+            baseTableName: orders
+            baseColumnNames: product_id
+            referencedTableName: products
+            referencedColumnNames: id
+            constraintName: order_product_fk
+
+        - addForeignKeyConstraint:
+            baseTableName: orders
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: order_user_fk
+
+
+  - changeSet:
+      id: 2
+      author: ahmad
+      changes:
+        - createTable:
+            tableName: user_activity
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+                    
+        - addForeignKeyConstraint:
+            baseTableName: user_activity
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: user_activity_user_fk
+
+     

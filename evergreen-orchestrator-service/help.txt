@@ -1,0 +1,9 @@
+
+
+clear && ./gradlew clean build bootRun --args='--server.port=8080 --spring.profiles.active=dev' --rerun-tasks
+clear && ./gradlew clean build bootRun --args='--server.port=8081 --spring.profiles.active=dev' --rerun-tasks
+
+
+
+clear && ./gradlew  bootRun --args='--server.port=8080 --spring.profiles.active=dev' 
+clear && ./gradlew  bootRun --args='--server.port=8081 --spring.profiles.active=dev' 

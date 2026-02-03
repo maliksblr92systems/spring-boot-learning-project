@@ -1,0 +1,6 @@
+id,first_name,last_name,email,phone,city,country,age
+1,Ahmad,Shaukat,ahmad.shaukat@example.com,+923001234567,Islamabad,Pakistan,28
+2,John,Doe,john.doe@example.com,+14155552671,San Francisco,USA,32
+3,Sara,Khan,sara.khan@example.com,+447911123456,London,UK,27
+4,Ali,Raza,ali.raza@example.com,+923214567890,Lahore,Pakistan,35
+5,Maria,Gonzalez,maria.gonzalez@example.com,+34911123456,Madrid,Spain,30

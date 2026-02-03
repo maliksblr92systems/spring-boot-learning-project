@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+          "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+          "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+
+    <!-- Suppress folders -->
+    <module name="SuppressionFilter">
+        <property name="file" value="checkstyle-suppressions.xml"/>
+    </module>
+
+    <!-- LineLength must be top-level, not inside TreeWalker -->
+    <module name="LineLength">
+        <property name="max" value="300"/>
+    </module>
+
+    <module name="TreeWalker">
+        <!-- FinalLocalVariable module, no extra properties -->
+        <module name="FinalLocalVariable"/>
+
+        <module name="EmptyBlock"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+        <module name="Indentation"/>
+        <module name="NeedBraces"/>
+        <module name="AvoidStarImport"/>
+    </module>
+
+</module>

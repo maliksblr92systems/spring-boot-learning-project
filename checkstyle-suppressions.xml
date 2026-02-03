@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <!-- Ignore all checks in any build folder -->
+    <suppress checks=".*" files=".*[\\/]build[\\/].*" />
+
+    <!-- Ignore all checks in lib folder -->
+    <suppress checks=".*" files=".*[\\/]lib[\\/].*" />
+    <suppress checks="FinalLocalVariable"/>
+</suppressions>

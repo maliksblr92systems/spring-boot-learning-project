@@ -1,6 +1,7 @@
 package com.evergreen.EvergreenAuthServer.services;
 
 import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.evergreen.EvergreenAuthServer.advices.ApiException;
 import com.evergreen.EvergreenAuthServer.dtos.requests.RegisterUserRequestDto;
 import com.evergreen.EvergreenAuthServer.dtos.requests.RegisterUserResponseDto;
 import com.evergreen.EvergreenAuthServer.dtos.requests.UserLoginRequestDto;
@@ -20,6 +20,7 @@ import com.evergreen.EvergreenAuthServer.models.AppUser;
 import com.evergreen.EvergreenAuthServer.repositories.AppUserRepository;
 import com.evergreen.EvergreenAuthServer.security.JwtService;
 import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
+import com.evergreen.lib.utils.ApiException;
 
 @Service
 public class AppUserService {
@@ -46,11 +47,10 @@ public class AppUserService {
         String password = userLoginDto.getPassword();
         String email = userLoginDto.getEmail();
 
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        Authentication auth = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(email, password));
         CustomUserDetail principal = (CustomUserDetail) auth.getPrincipal();
         AppUser appUser = appUserRepository.findByEmail(principal.getUsername());
-
-
 
         String accessToken = jwtService.generateJwtToken(appUser);
         UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto();
@@ -77,7 +77,8 @@ public class AppUserService {
         newAppUser.setPassword(encodedPassword);
         newAppUser = this.appUserRepository.save(newAppUser);
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(newAppUser.getEmail(), password));
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(newAppUser.getEmail(), password));
         if (!authentication.isAuthenticated()) {
             throw ApiException.unAuthenticated("Not authenticated");
         }
@@ -91,8 +92,6 @@ public class AppUserService {
         CustomUserDetail userPrincipal = (CustomUserDetail) authentication.getPrincipal();
         AppUser appUser = appUserRepository.findByEmail(userPrincipal.getUsername());
         return new UserIsAuthenticatedResponseDto(appUserMapper.toDto(appUser));
-
-
 
     }
 

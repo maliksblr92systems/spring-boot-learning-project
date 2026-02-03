@@ -15,10 +15,8 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info().title("Evergreen Auth Service").version("1.0").description("API documentation for Evergreen Auth Service"))
+        return new OpenAPI().info(new Info().title("Evergreen Auth Service").version("1.0").description("API documentation for Evergreen Auth Service"))
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
-                .components(new Components().addSecuritySchemes(SECURITY_SCHEME_NAME,
-                        new SecurityScheme().name("Authorization").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+                .components(new Components().addSecuritySchemes(SECURITY_SCHEME_NAME, new SecurityScheme().name("Authorization").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
     }
 }

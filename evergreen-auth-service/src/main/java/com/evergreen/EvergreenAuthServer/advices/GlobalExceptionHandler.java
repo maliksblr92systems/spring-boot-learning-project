@@ -1,6 +1,7 @@
 package com.evergreen.EvergreenAuthServer.advices;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.evergreen.EvergreenAuthServer.utils.ApiError;
+import com.evergreen.lib.utils.ApiError;
+import com.evergreen.lib.utils.ApiException;
 
 import io.jsonwebtoken.security.SignatureException;
 
@@ -23,8 +25,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<?> handleApiErrorException(ApiException apiException) {
-        HttpStatus httpStatus = apiException.getHttpStatus();
-        String error = apiException.getApiError().getError();
+        final HttpStatus httpStatus = apiException.getHttpStatus();
+        final String error = apiException.getApiError().getError();
         System.out.println("============================================");
         System.out.println(error);
         System.out.println("============================================");
@@ -32,22 +34,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ApiError(error), httpStatus);
     }
 
-
-
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleBadCredentialsException(UsernameNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiError(ex.getMessage()));
 
     }
 
-
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiError(ex.getMessage()));
 
     }
-
-
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception ex) {
@@ -66,16 +63,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        List<String> errorsList =
-                ex.getBindingResult().getFieldErrors().stream().map(error -> error.getField() + " " + error.getDefaultMessage()).toList();
+        final List<String> errorsList = ex.getBindingResult().getFieldErrors().stream().map(error -> error.getField() + " " + error.getDefaultMessage()).toList();
         return ResponseEntity.unprocessableEntity().body(new ApiError(errorsList));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        Throwable root = ex.getRootCause() == null ? ex : ex.getRootCause();
-        String error = root.getMessage().replace("ERROR", "").replace("Detail", "");
+        final Throwable root = ex.getRootCause() == null ? ex : ex.getRootCause();
+        final String error = root.getMessage().replace("ERROR", "").replace("Detail", "");
         return new ResponseEntity<>(new ApiError(error), HttpStatus.CONFLICT);
     }
 }
-

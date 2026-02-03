@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.10'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.10'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.evergreen'
@@ -9,17 +9,18 @@ version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
-	// toolchain {
-	// 	languageVersion = JavaLanguageVersion.of(21)
+    // toolchain {
+    //     languageVersion = JavaLanguageVersion.of(21)
     //      vendor = JvmVendorSpec.ADOPTOPENJDK
-	// }
+    // }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
+    implementation project(':lib')
     implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.10')
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -28,16 +29,29 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    runtimeOnly 'org.springframework.boot:spring-boot-devtools'  
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-   // Kafka 
+  
+
+    // Protobuf
+    implementation 'com.google.protobuf:protobuf-java:3.24.3'
+
+    // Optional: logging interceptor
+    // implementation 'io.grpc:grpc-protobuf:1.58.0'
+    // implementation 'io.grpc:grpc-stub:1.58.0'
+    // implementation 'net.devh:grpc-server-spring-boot-starter:2.13.1.RELEASE'
+     // gRPC server & client support
+    // implementation 'net.devh:grpc-spring-boot-starter:2.15.0'
+    implementation 'net.devh:grpc-client-spring-boot-starter:2.15.0.RELEASE'
+    implementation 'net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE'
+
+
+
+
+   // Kafka
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.apache.kafka:kafka-clients'
-
-
-
-
 
     // MapStruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final' // main lib
@@ -73,5 +87,5 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

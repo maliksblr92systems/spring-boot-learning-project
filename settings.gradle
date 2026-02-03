@@ -1,3 +1,6 @@
 rootProject.name = 'evergreen-microservices'
-include("evergreen-auth-service")
-// include("evergreen-payment-service")
+
+include('evergreen-auth-service')
+include('evergreen-payment-service')
+include('evergreen-orchestrator-service')
+include('lib')

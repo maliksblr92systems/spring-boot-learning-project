@@ -9,6 +9,27 @@
             "projectName": "evergreen-auth-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EvergreenOrchestratorServerApplication<evergreen-orchestrator-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.evergreen.EvergreenOrchestratorServer.EvergreenOrchestratorServerApplication",
+            "projectName": "evergreen-orchestrator-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=40289 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=evergreen-orchestrator-service"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EvergreenPaymentServerApplication<evergreen-payment-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.evergreen.EvergreenPaymentServer.EvergreenPaymentServerApplication",
+            "projectName": "evergreen-payment-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

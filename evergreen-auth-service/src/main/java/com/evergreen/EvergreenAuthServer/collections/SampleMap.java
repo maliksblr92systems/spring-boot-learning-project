@@ -29,8 +29,7 @@ public class SampleMap {
      */
     public void convertNamesFirstLetterToUpperCaseAndPrint() {
         List<String> thingNames = this.getThingNames();
-        thingNames.stream().map(thing -> Character.toUpperCase(thing.charAt(0)) + thing.substring(1))
-                .forEach((thing) -> System.out.println("thing is " + thing));
+        thingNames.stream().map(thing -> Character.toUpperCase(thing.charAt(0)) + thing.substring(1)).forEach((thing) -> System.out.println("thing is " + thing));
     }
 
     private ExampleStudent changeNameCase(ExampleStudent student) {

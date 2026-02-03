@@ -1,6 +1,7 @@
 package com.evergreen.EvergreenAuthServer.services.order;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.evergreen.EvergreenAuthServer.advices.ApiException;
 import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityStatus;
 import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityType;
 import com.evergreen.EvergreenAuthServer.dtos.entity.OrderDto;
@@ -22,6 +22,7 @@ import com.evergreen.EvergreenAuthServer.repositories.OrderRepository;
 import com.evergreen.EvergreenAuthServer.repositories.ProductRepository;
 import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
 import com.evergreen.EvergreenAuthServer.services.user_activity.IUserActivityService;
+import com.evergreen.lib.utils.ApiException;
 
 @Service
 public class OrderService implements IOrderService {
@@ -32,16 +33,15 @@ public class OrderService implements IOrderService {
     private final AppUserRepository appUserRepository;
     private final IUserActivityService userActivityService;
 
-
     public OrderService(ProductRepository productRepository, OrderRepository orderRepository, OrderMapper orderMapper,
-            AppUserRepository appUserRepository, @Qualifier("userActivityService") IUserActivityService userActivityService) {
+            AppUserRepository appUserRepository,
+            @Qualifier("userActivityService") IUserActivityService userActivityService) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.appUserRepository = appUserRepository;
         this.userActivityService = userActivityService;
     }
-
 
     private void validateProductStock(Product product, int quantity) {
 
@@ -60,7 +60,6 @@ public class OrderService implements IOrderService {
     @Transactional(propagation = Propagation.REQUIRED)
     private Order createOrder(Product product, int quantity, AppUser user) {
 
-
         Order order = new Order();
         order.setAmount(quantity * product.getPrice());
         order.setProduct(product);
@@ -73,12 +72,13 @@ public class OrderService implements IOrderService {
         return orderRepository.save(order);
     }
 
+    // @REQUIRED : if a transaction already exists -> join else if transaction does
+    // not exist -> create
+    // @REQUIRED_NEW : always create a new transaction , suspend previous if
+    // @MANDATORY : requires a existing transaction else with throw an error
 
-    // @REQUIRED : if a transaction already exists -> join else if transaction does not exist -> create
-    // @REQUIRED_NEW : always create a new transaction , suspend previous if 
-    // @MANDATORY : requires a existing transaction else with throw an error 
-
-    // default config is (propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    // default config is (propagation = Propagation.REQUIRED, isolation =
+    // Isolation.READ_COMMITTED)
     // isolation means how one transaction see the changes in other transactions
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -111,8 +111,6 @@ public class OrderService implements IOrderService {
 
         }
         return orderMapper.toDto(order);
-
-
 
     }
 

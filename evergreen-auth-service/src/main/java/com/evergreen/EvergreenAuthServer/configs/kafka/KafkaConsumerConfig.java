@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
+
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
@@ -25,8 +26,6 @@ public class KafkaConsumerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-
-
     @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
         HashMap<String, Object> props = new HashMap<>();
@@ -38,12 +37,10 @@ public class KafkaConsumerConfig {
 
     }
 
-
     //
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaListenerContainer(
-            ConsumerFactory<String, Object> consumerFactory) {
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaListenerContainer(ConsumerFactory<String, Object> consumerFactory) {
 
         HashMap<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -62,11 +59,8 @@ public class KafkaConsumerConfig {
 
     }
 
-
-
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaPartialRealtimeListenerContainer(
-            ConsumerFactory<String, Object> consumerFactory) {
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaPartialRealtimeListenerContainer(ConsumerFactory<String, Object> consumerFactory) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         HashMap<String, Object> props = new HashMap<>();
@@ -85,9 +79,11 @@ public class KafkaConsumerConfig {
     }
 
     // This container uses a random group ID for the consumer.
-    // - Ensures that even if the service has run before and consumer groups already exist,
+    // - Ensures that even if the service has run before and consumer groups already
+    // exist,
     // all events produced before this service starts are ignored.
-    // - Suitable for real-time event streams where only current/future data matters,
+    // - Suitable for real-time event streams where only current/future data
+    // matters,
     // e.g., sensor readings, temperature updates, or live weather forecasts.
     // - Usage:
     // @KafkaListener(
@@ -96,8 +92,7 @@ public class KafkaConsumerConfig {
     // )
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaCompleteRealtimeListenerContainer(
-            ConsumerFactory<String, Object> consumerFactory) {
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaCompleteRealtimeListenerContainer(ConsumerFactory<String, Object> consumerFactory) {
 
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         HashMap<String, Object> props = new HashMap<>();
@@ -109,12 +104,11 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 
-
         // Generate a random group ID for this container
-        String randomGroupId = "auth-service-" + UUID.randomUUID();
+        final String randomGroupId = "auth-service-" + UUID.randomUUID();
         props.put(ConsumerConfig.GROUP_ID_CONFIG, randomGroupId);
 
-        ConsumerFactory<String, Object> factoryProps = new DefaultKafkaConsumerFactory<>(props);
+        final ConsumerFactory<String, Object> factoryProps = new DefaultKafkaConsumerFactory<>(props);
         factory.setConsumerFactory(factoryProps);
 
         // Optional: make sure old messages are skipped if offsets exist
@@ -130,6 +124,5 @@ public class KafkaConsumerConfig {
 
         return factory;
     }
-
 
 }

@@ -1,39 +1,34 @@
 {
-  
+    // ------------------------------
+    // Editor & Formatting
+    // ------------------------------
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "redhat.java",
 
- 
-  // "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
-  // "java.compile.nullAnalysis.mode": "automatic",
-  // "java.debug.settings.onBuildFailureProceed": true,
-  // "java.format.settings.profile": "GoogleStyle",
-  // "java.format.settings.url": "${workspaceFolder}/eclipse-java-google-style.xml",
-  // //  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    // ------------------------------
+    // Java formatting (Eclipse profile)
+    // ------------------------------
+    "java.format.enabled": true,
+    "java.format.settings.url": "${workspaceFolder}/eclipse-java-google-style.xml",
+    "java.format.settings.profile": "GoogleStyle",
 
-  // "java.configuration.runtimes": [
-  //   {
-  //     "name": "JavaSE-21",
-  //     "path": "/usr/lib/jvm/java-21-openjdk-amd64",
-  //     "default": true
-  //   }
-  // ],
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "redhat.java",
-   "editor.codeActionsOnSave": {
-    "source.organizeImports": "always"
-  },
-  
-  "sqltools.connections": [
-    {
-      "ssh": "Disabled",
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "local_evergreen_test_db",
-      "database": "evergreen_test_db",
-      "username": "evergreen_test_user",
-      "password": "Google@123"
-    }
-  ]
+    // ------------------------------
+    // Checkstyle
+    // ------------------------------
+    "java.checkstyle.enabled": true,
+    "java.checkstyle.version": "13.1.0",
+    "java.checkstyle.configuration": "${workspaceFolder}/checkstyle.xml",
 
+    // ------------------------------
+    // Java language server
+    // ------------------------------
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+
+    // ------------------------------
+    // Apply to all subfolders
+    // ------------------------------
+    "java.workspace.includeSubfolders": true
 }

@@ -1,0 +1,20 @@
+clear && ./gradlew evergreen-payment-service:clean evergreen-payment-service:build  
+
+
+
+
+clear && ./gradlew evergreen-orchestrator-service:clean evergreen-orchestrator-service:build  
+clear && ./gradlew lib:clean lib:build  && ./gradlew evergreen-orchestrator-service:clean evergreen-orchestrator-service:build  
+
+
+
+
+
+
+
+
+clear && ./gradlew evergreen-auth-service:clean evergreen-auth-service:build  
+clear && ./gradlew lib:clean lib:build  && ./gradlew evergreen-auth-service:clean evergreen-auth-service:build  
+
+
+

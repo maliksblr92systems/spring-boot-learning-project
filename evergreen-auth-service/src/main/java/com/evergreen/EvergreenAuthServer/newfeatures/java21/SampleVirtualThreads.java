@@ -42,7 +42,7 @@ public class SampleVirtualThreads {
 
 
     public void demo() {
-        Thread virtualThread = Thread.startVirtualThread(() -> {
+        final Thread virtualThread = Thread.startVirtualThread(() -> {
             System.out.println("==============================");
             System.out.println("==============================");
             System.out.println("Thread Name" + Thread.currentThread().getName());
@@ -50,7 +50,7 @@ public class SampleVirtualThreads {
 
         });
 
-        Thread platformThread = new Thread(() -> {
+        final Thread platformThread = new Thread(() -> {
             System.out.println("==============================");
             System.out.println("==============================");
             System.out.println("Thread Name" + Thread.currentThread().getName());
