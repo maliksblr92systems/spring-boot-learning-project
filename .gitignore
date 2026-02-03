@@ -1,77 +1,37 @@
-# ------------------------------
-# Gradle
-# ------------------------------
-.gradle/
+HELP.md
+.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# ------------------------------
-# Java / IDE
-# ------------------------------
-*.class
-*.log
-*.jar
-*.war
-*.ear
-*.iml
-*.class
-*.tmp
-*.bak
-*.swp
-*.DS_Store
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# VS Code
-.vscode/
-
-# IntelliJ IDEA
-.idea/
+### IntelliJ IDEA ###
+.idea
 *.iws
 *.iml
 *.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-# Eclipse
-.settings/
-bin/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-# ------------------------------
-# Spring Boot
-# ------------------------------
-spring-boot-app/
-target/
-!**/src/main/**
-
-# ------------------------------
-# Logs and temp files
-# ------------------------------
-*.log
-*.tmp
-*.out
-
-# ------------------------------
-# OS specific
-# ------------------------------
-Thumbs.db
-.DS_Store
-ehthumbs.db
-
-# ------------------------------
-# Maven Wrapper (if any)
-# ------------------------------
-.mvn/
-mvnw
-mvnw.cmd
-
-# ------------------------------
-# Node (if any frontend in microservices)
-# ------------------------------
-node_modules/
-dist/
-build/
-
-# ------------------------------
-# Certificates or credentials
-# ------------------------------
-*.jks
-*.p12
-*.keystore
-.env
+### VS Code ###
+.vscode/
