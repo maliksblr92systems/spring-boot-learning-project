@@ -15,7 +15,8 @@ import com.evergreen.EvergreenOrchestratorServer.services.order.IOrderServiceOrc
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/order")
+@RequestMapping("/api/v1/orechestrator/order")
+
 public class OrderOrchestratorController {
 
     @Autowired
