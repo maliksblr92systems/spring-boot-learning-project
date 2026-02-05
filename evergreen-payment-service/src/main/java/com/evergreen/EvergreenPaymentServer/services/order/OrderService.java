@@ -11,10 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityStatus;
 import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityType;
-import com.evergreen.EvergreenAuthServer.dtos.entity.OrderDto;
 import com.evergreen.EvergreenAuthServer.dtos.requests.order.CreateOrderRequestDto;
-import com.evergreen.EvergreenAuthServer.mappers.OrderMapper;
-import com.evergreen.EvergreenAuthServer.models.AppUser;
+import com.evergreen.EvergreenAuthServer.models.AppUserModel;
 import com.evergreen.EvergreenAuthServer.models.Order;
 import com.evergreen.EvergreenAuthServer.models.Product;
 import com.evergreen.EvergreenAuthServer.repositories.AppUserRepository;
@@ -22,6 +20,8 @@ import com.evergreen.EvergreenAuthServer.repositories.OrderRepository;
 import com.evergreen.EvergreenAuthServer.repositories.ProductRepository;
 import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
 import com.evergreen.EvergreenAuthServer.services.user_activity.IUserActivityService;
+import com.evergreen.EvergreenPaymentServer.mappers.OrderMapper;
+import com.evergreen.lib.dtos.order.OrderDto;
 import com.evergreen.lib.utils.ApiException;
 
 @Service
@@ -33,8 +33,7 @@ public class OrderService implements IOrderService {
     private final AppUserRepository appUserRepository;
     private final IUserActivityService userActivityService;
 
-    public OrderService(ProductRepository productRepository, OrderRepository orderRepository, OrderMapper orderMapper,
-            AppUserRepository appUserRepository,
+    public OrderService(ProductRepository productRepository, OrderRepository orderRepository, OrderMapper orderMapper, AppUserRepository appUserRepository,
             @Qualifier("userActivityService") IUserActivityService userActivityService) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
@@ -58,7 +57,7 @@ public class OrderService implements IOrderService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    private Order createOrder(Product product, int quantity, AppUser user) {
+    private Order createOrder(Product product, int quantity, AppUserModel user) {
 
         Order order = new Order();
         order.setAmount(quantity * product.getPrice());
@@ -86,7 +85,7 @@ public class OrderService implements IOrderService {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetail userPrincipal = (CustomUserDetail) auth.getPrincipal();
-        AppUser user = appUserRepository.findByEmail(userPrincipal.getUsername());
+        AppUserModel user = appUserRepository.findByEmail(userPrincipal.getUsername());
         if (user == null) {
             throw ApiException.badRequest("user not found.");
         }

@@ -19,14 +19,5 @@ public class EvergreenPaymentServerApplication {
         SpringApplication.run(EvergreenPaymentServerApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner() {
-        return args -> {
-            for (int x = 0; x < 10; x++) {
-                // kafkaTemplate.send("payment-topic", "Hy payment(" + x + ")");
-
-            }
-        };
-    }
 
 }

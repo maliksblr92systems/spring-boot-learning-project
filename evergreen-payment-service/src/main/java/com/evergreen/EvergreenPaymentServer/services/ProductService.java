@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
-import com.evergreen.EvergreenAuthServer.dtos.entity.ProductDto;
 import com.evergreen.EvergreenAuthServer.dtos.requests.product.CreateProductRequestDto;
-import com.evergreen.EvergreenAuthServer.mappers.ProductMapper;
 import com.evergreen.EvergreenAuthServer.models.Category;
 import com.evergreen.EvergreenAuthServer.models.Product;
 import com.evergreen.EvergreenAuthServer.repositories.CategoryRepository;
 import com.evergreen.EvergreenAuthServer.repositories.ProductRepository;
+import com.evergreen.EvergreenPaymentServer.mappers.ProductMapper;
+import com.evergreen.lib.dtos.product.ProductDto;
 import com.evergreen.lib.utils.ApiException;
 
 @Service
@@ -21,8 +20,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper,
-            CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper, CategoryRepository categoryRepository) {
         this.productMapper = productMapper;
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;

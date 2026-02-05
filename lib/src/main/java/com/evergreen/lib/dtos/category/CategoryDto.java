@@ -1,7 +1,8 @@
-package com.evergreen.EvergreenAuthServer.dtos.entity;
+package com.evergreen.lib.dtos.category;
 
 import java.time.Instant;
-
+import java.util.List;
+import com.evergreen.lib.dtos.product.LightweightProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,24 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppUserDto {
 
+public class CategoryDto {
     private int id;
-
     private String name;
-
-    private String email;
-
-    private String phoneNumber;
-
-    private String username;
-
-    private String password;
-
-    private Boolean isActive;
-
+    private String thumbnail;
+    private List<LightweightProductDto> products;
     private Instant createdAt;
-
     private Instant updatedAt;
-
 }

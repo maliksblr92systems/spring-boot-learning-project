@@ -1,15 +1,10 @@
-package com.evergreen.EvergreenAuthServer.services.category;
+package com.evergreen.EvergreenPaymentServer.services.category;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
-import com.evergreen.EvergreenAuthServer.dtos.entity.CategoryDto;
-import com.evergreen.EvergreenAuthServer.dtos.requests.category.CreateCategoryRequestDto;
-import com.evergreen.EvergreenAuthServer.dtos.requests.category.UpdateCategoryByIdRequestDto;
-import com.evergreen.EvergreenAuthServer.mappers.CategoryMapper;
-import com.evergreen.EvergreenAuthServer.models.Category;
-import com.evergreen.EvergreenAuthServer.repositories.CategoryRepository;
+import com.evergreen.EvergreenPaymentServer.mappers.CategoryMapper;
+import com.evergreen.lib.dtos.category.CategoryDto;
 import com.evergreen.lib.utils.ApiException;
 
 @Service
@@ -38,16 +33,14 @@ public class CategoryService implements ICategoryService {
     }
 
     public CategoryDto getOne(int id) {
-        Category category = this.categoryRepository.findById(id)
-                .orElseThrow(() -> ApiException.notFound("Category not found."));
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> ApiException.notFound("Category not found."));
         return categoryMapper.toDto(category);
     }
 
     public CategoryDto update(UpdateCategoryByIdRequestDto request) {
         int id = request.getId();
         String name = request.getName();
-        Category category = this.categoryRepository.findById(id)
-                .orElseThrow(() -> ApiException.notFound("Category not found."));
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> ApiException.notFound("Category not found."));
         category.setName(name);
         category = categoryRepository.save(category);
         return categoryMapper.toDto(category);

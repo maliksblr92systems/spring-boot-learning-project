@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import com.evergreen.EvergreenAuthServer.models.AppUser;
+import com.evergreen.EvergreenAuthServer.models.AppUserModel;
 import com.evergreen.EvergreenAuthServer.repositories.AppUserRepository;
 import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class AppUserDetailsService implements UserDetailsService {
     @Override
     public CustomUserDetail loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        AppUser appUser = appUserRepository.findByEmail(email);
+        AppUserModel appUser = appUserRepository.findByEmail(email);
         log.info("user found for email {}", appUser);
         if (appUser == null) {
             // It only expects UsernameNotFoundException to be thrown from here

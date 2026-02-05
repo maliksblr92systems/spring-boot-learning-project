@@ -8,7 +8,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 
-import com.evergreen.EvergreenAuthServer.models.AppUser;
+import com.evergreen.EvergreenAuthServer.models.AppUserModel;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,14 +25,13 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateJwtToken(AppUser appUser) {
+    public String generateJwtToken(AppUserModel appUser) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", appUser.getEmail());
 
         String userEmail = String.valueOf(appUser.getEmail());
-        return Jwts.builder().claims(claims).subject(userEmail).issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() * 60 * 60 * 30)) // 30 minutes
-                                                                                 // expiry
+        return Jwts.builder().claims(claims).subject(userEmail).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis() * 60 * 60 * 30)) // 30 minutes
+                                                                                                                                                                               // expiry
                 // .and()
                 .signWith(getKey()).compact();
     }

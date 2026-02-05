@@ -16,7 +16,7 @@ import com.evergreen.EvergreenAuthServer.dtos.requests.UserLoginRequestDto;
 import com.evergreen.EvergreenAuthServer.dtos.responses.UserIsAuthenticatedResponseDto;
 import com.evergreen.EvergreenAuthServer.dtos.responses.UserLoginResponseDto;
 import com.evergreen.EvergreenAuthServer.mappers.AppUserMapper;
-import com.evergreen.EvergreenAuthServer.models.AppUser;
+import com.evergreen.EvergreenAuthServer.models.AppUserModel;
 import com.evergreen.EvergreenAuthServer.repositories.AppUserRepository;
 import com.evergreen.EvergreenAuthServer.security.JwtService;
 import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
@@ -47,10 +47,9 @@ public class AppUserService {
         String password = userLoginDto.getPassword();
         String email = userLoginDto.getEmail();
 
-        Authentication auth = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         CustomUserDetail principal = (CustomUserDetail) auth.getPrincipal();
-        AppUser appUser = appUserRepository.findByEmail(principal.getUsername());
+        AppUserModel appUser = appUserRepository.findByEmail(principal.getUsername());
 
         String accessToken = jwtService.generateJwtToken(appUser);
         UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto();
@@ -67,18 +66,17 @@ public class AppUserService {
         if (!Objects.equals(password, confirmPassword)) {
             throw ApiException.badRequest("Password and Confirm Password do not match.");
         }
-        AppUser alreadyExistsByEmail = appUserRepository.findByEmail(email);
+        AppUserModel alreadyExistsByEmail = appUserRepository.findByEmail(email);
         if (alreadyExistsByEmail != null) {
             throw ApiException.badRequest("User already exists with  email '" + email + "' .");
         }
         String encodedPassword = bCryptPasswordEncoder.encode(password);
-        AppUser newAppUser = new AppUser();
+        AppUserModel newAppUser = new AppUserModel();
         newAppUser.setEmail(email);
         newAppUser.setPassword(encodedPassword);
         newAppUser = this.appUserRepository.save(newAppUser);
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(newAppUser.getEmail(), password));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(newAppUser.getEmail(), password));
         if (!authentication.isAuthenticated()) {
             throw ApiException.unAuthenticated("Not authenticated");
         }
@@ -90,7 +88,7 @@ public class AppUserService {
     public UserIsAuthenticatedResponseDto isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetail userPrincipal = (CustomUserDetail) authentication.getPrincipal();
-        AppUser appUser = appUserRepository.findByEmail(userPrincipal.getUsername());
+        AppUserModel appUser = appUserRepository.findByEmail(userPrincipal.getUsername());
         return new UserIsAuthenticatedResponseDto(appUserMapper.toDto(appUser));
 
     }

@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.evergreen.EvergreenAuthServer.dtos.entity.CategoryDto;
 import com.evergreen.EvergreenAuthServer.dtos.requests.category.CreateCategoryRequestDto;
 import com.evergreen.EvergreenAuthServer.dtos.requests.category.UpdateCategoryByIdRequestDto;
 import com.evergreen.EvergreenAuthServer.services.category.CategoryService;
 import com.evergreen.EvergreenAuthServer.services.category.ICategoryService;
-
+import com.evergreen.lib.dtos.category.CategoryDto;
 import jakarta.validation.Valid;
 
 

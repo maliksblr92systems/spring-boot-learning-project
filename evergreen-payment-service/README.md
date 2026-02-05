@@ -20,7 +20,7 @@ This project is a Spring Boot implementation demonstrating multiple enterprise-l
    - Custom `JwtFilter` and `JwtService` for validating and generating tokens.
 
 2. **JPA Entities with PostgreSQL**
-   - Entities include `AppUser`, `Category`, `Product`, and `Customer`.
+   - Entities include `AppUserModel`, `Category`, `Product`, and `Customer`.
    - One-to-Many and Many-to-One relationship implemented between `Category` and `Product`.
    - Follows best practices for JPA and database integration.
 

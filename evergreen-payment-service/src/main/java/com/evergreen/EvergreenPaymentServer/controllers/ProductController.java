@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.evergreen.EvergreenAuthServer.dtos.entity.ProductDto;
 import com.evergreen.EvergreenAuthServer.dtos.requests.product.CreateProductRequestDto;
 import com.evergreen.EvergreenAuthServer.services.ProductService;
-
+import com.evergreen.lib.dtos.product.ProductDto;
 import jakarta.validation.Valid;
 
 @RestController

@@ -1,8 +1,7 @@
 package com.evergreen.EvergreenAuthServer.dtos.requests;
 
 
-import com.evergreen.EvergreenAuthServer.dtos.entity.AppUserDto;
-
+import com.evergreen.lib.dtos.appuser.AppUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

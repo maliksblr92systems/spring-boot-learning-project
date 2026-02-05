@@ -3,7 +3,6 @@ plugins {
     id 'com.google.protobuf' version "${protobufPluginVersion}"
 }
 
-
 // def grpcVersion = project.hasProperty('grpcVersion') ? project.grpcVersion : '1.58.0'
 // def protobufVersion = project.hasProperty('protobufVersion') ? project.protobufVersion : '3.24.3'
 // def protobufPluginVersion = project.hasProperty('protobufPluginVersion') ? project.protobufPluginVersion : '0.9.4'
@@ -14,17 +13,15 @@ println "protobufPluginVersion = ${protobufPluginVersion}"
 println "protobufVersion = ${protobufVersion}"
 println "buildDir = ${buildDir}"
 
-
-
 group = 'com.evergreen'
 version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
-    // toolchain {
-    //     languageVersion = JavaLanguageVersion.of(21)
-    //      vendor = JvmVendorSpec.ADOPTOPENJDK
-    // }
+// toolchain {
+//     languageVersion = JavaLanguageVersion.of(21)
+//      vendor = JvmVendorSpec.ADOPTOPENJDK
+// }
 }
 
 repositories {
@@ -32,11 +29,10 @@ repositories {
 }
 
 dependencies {
-   
+
     // DTO helpers
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-
 
     implementation 'org.springframework:spring-web:6.2.15'
 
@@ -45,7 +41,7 @@ dependencies {
     // Grpc
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
-    
+
     // Validation annotations
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 
@@ -76,7 +72,7 @@ protobuf {
     }
     generateProtoTasks {
         all()*.plugins {
-            grpc {}
+            grpc { }
         }
     }
 }

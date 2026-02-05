@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityStatus;
 import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityType;
-import com.evergreen.EvergreenAuthServer.models.AppUser;
+import com.evergreen.EvergreenAuthServer.models.AppUserModel;
 import com.evergreen.EvergreenAuthServer.models.UserActivity;
 import com.evergreen.EvergreenAuthServer.repositories.UserActivityRepository;
 
@@ -20,7 +20,7 @@ public class UserActivityService implements IUserActivityService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void create(AppUser user, UserActivityType type, UserActivityStatus status) {
+    public void create(AppUserModel user, UserActivityType type, UserActivityStatus status) {
         UserActivity userActivity = new UserActivity();
         userActivity.setUser(user);
         userActivity.setType(type);

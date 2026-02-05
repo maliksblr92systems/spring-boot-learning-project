@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
-public class AppUser {
+public class AppUserModel {
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +58,7 @@ public class AppUser {
 
     @Override
     public String toString() {
-        return "AppUser id=" + id + " name=" + name + " email=" + email + " username=" + username;
+        return "AppUserModel id=" + id + " name=" + name + " email=" + email + " username=" + username;
     }
 
 

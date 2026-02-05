@@ -12,6 +12,7 @@
     <!-- LineLength must be top-level, not inside TreeWalker -->
     <module name="LineLength">
         <property name="max" value="300"/>
+         <property name="ignorePattern" value="^\\s*\\*.*$"/>
     </module>
 
     <module name="TreeWalker">

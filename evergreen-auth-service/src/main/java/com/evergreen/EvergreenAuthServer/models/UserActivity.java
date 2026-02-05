@@ -39,7 +39,7 @@ public class UserActivity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_activity_user_fk"), nullable = false)
-    private AppUser user;
+    private AppUserModel user;
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)

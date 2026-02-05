@@ -1,4 +1,4 @@
-package com.evergreen.EvergreenAuthServer.dtos.entity;
+package com.evergreen.lib.dtos.order;
 
 import java.time.Instant;
 import lombok.AllArgsConstructor;
