@@ -1,7 +1,6 @@
-package com.evergreen.EvergreenAuthServer.dtos.requests.category;
+package com.evergreen.EvergreenPaymentServer.dtos.category;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCategoryByIdRequestDto {
+public class CreateCategoryRequestDto {
 
-    @NotNull
-    private int id;
     @NotBlank
     private String name;
+
 
 }

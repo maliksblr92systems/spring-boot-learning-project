@@ -1,8 +1,9 @@
-package com.evergreen.EvergreenAuthServer.services.category;
+package com.evergreen.EvergreenPaymentServer.services.category;
 
 import java.util.List;
-import com.evergreen.EvergreenAuthServer.dtos.requests.category.CreateCategoryRequestDto;
-import com.evergreen.EvergreenAuthServer.dtos.requests.category.UpdateCategoryByIdRequestDto;
+
+import com.evergreen.EvergreenPaymentServer.dtos.category.CreateCategoryRequestDto;
+import com.evergreen.EvergreenPaymentServer.dtos.category.UpdateCategoryByIdRequestDto;
 import com.evergreen.lib.dtos.category.CategoryDto;
 
 /**

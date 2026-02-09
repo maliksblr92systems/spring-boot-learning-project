@@ -1,4 +1,4 @@
-package com.evergreen.EvergreenAuthServer.filters;
+package com.evergreen.EvergreenPaymentServer.filters;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,9 +10,6 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.evergreen.EvergreenAuthServer.implementations.AppUserDetailsService;
-import com.evergreen.EvergreenAuthServer.security.JwtService;
-import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
 import com.evergreen.lib.utils.ApiException;
 
 import jakarta.servlet.FilterChain;
@@ -32,9 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtService jwtService;
-
-    @Autowired
-    private AppUserDetailsService appUserDetailsService;
 
     @Autowired
     public JwtAuthenticationFilter(HandlerExceptionResolver handlerExceptionResolver) {

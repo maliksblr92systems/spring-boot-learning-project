@@ -1,46 +1,55 @@
-package com.evergreen.EvergreenPaymentServer.models;
+package com.evergreen.EvergreenAuthServer.models;
 
 import java.time.Instant;
-import java.util.List;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "categories")
-@Entity(name = "categories")
+@Entity(name = "customers")
+@Table(name = "customers")
 @Data
-@AllArgsConstructor(staticName = "build")
+@AllArgsConstructor
 @NoArgsConstructor
-public class CategoryModel {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@EntityListeners(AuditingEntityListener.class)
+
+public class Customer {
+
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(name = "name", nullable = false, updatable = true)
-    private String name;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "thumbnail", nullable = true, updatable = true)
-    private String thumbnail;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-    // here mappedBy should be name of column given to product table for category
+    @Column(name = "email", nullable = false)
+    private String email;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<ProductModel> products;
+    @Column(name = "phone", nullable = false)
+    private String phone;
+
+    @Column(name = "city", nullable = false)
+    private String city;
+
+    @Column(name = "country", nullable = false)
+    private String country;
+
+    @Column(name = "age", nullable = false)
+    private int age;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
@@ -49,4 +58,5 @@ public class CategoryModel {
     @Column(name = "updated_at", nullable = false, updatable = true)
     @LastModifiedDate
     private Instant updatedAt;
+
 }

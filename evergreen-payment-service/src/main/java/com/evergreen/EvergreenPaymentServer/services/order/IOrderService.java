@@ -1,7 +1,8 @@
-package com.evergreen.EvergreenAuthServer.services.order;
+package com.evergreen.EvergreenPaymentServer.services.order;
 
 import java.util.List;
-import com.evergreen.EvergreenAuthServer.dtos.requests.order.CreateOrderRequestDto;
+
+import com.evergreen.EvergreenPaymentServer.dtos.order.CreateOrderRequestDto;
 import com.evergreen.lib.dtos.order.OrderDto;
 
 public interface IOrderService {

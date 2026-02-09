@@ -1,4 +1,4 @@
-package com.evergreen.EvergreenAuthServer.dtos.requests.product;
+package com.evergreen.EvergreenPaymentServer.dtos;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

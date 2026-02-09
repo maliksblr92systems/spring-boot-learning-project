@@ -30,14 +30,13 @@ public class CustomerCsvImportBatchJob {
     private PlatformTransactionManager platformTransactionManager;
     private JobRepository jobRepository;
 
-    public CustomerCsvImportBatchJob(CustomerRepository customerRepository, PlatformTransactionManager platformTransactionManager,
+    public CustomerCsvImportBatchJob(CustomerRepository customerRepository,
+            PlatformTransactionManager platformTransactionManager,
             JobRepository jobRepository) {
         this.customerRepository = customerRepository;
         this.platformTransactionManager = platformTransactionManager;
         this.jobRepository = jobRepository;
     }
-
-
 
     @Bean
     public ItemReader<Customer> getCustomerCsvReader() {
@@ -48,7 +47,6 @@ public class CustomerCsvImportBatchJob {
         lineTokenizer.setStrict(false);
         lineTokenizer.setNames("id", "first_name", "last_name", "email", "phone", "city", "country", "age");
         // LineTokenizer end
-
 
         // FieldSetMapper start
         BeanWrapperFieldSetMapper<Customer> fieldSetMapper = new BeanWrapperFieldSetMapper<Customer>();
@@ -61,8 +59,6 @@ public class CustomerCsvImportBatchJob {
         lineMapper.setFieldSetMapper(fieldSetMapper);
         // LineMapper end
 
-
-
         FlatFileItemReader<Customer> flatFileItemReader = new FlatFileItemReader<>();
         flatFileItemReader.setResource(new ClassPathResource("data/csv/customer.csv"));
         flatFileItemReader.setLineMapper(lineMapper);
@@ -71,7 +67,6 @@ public class CustomerCsvImportBatchJob {
         return flatFileItemReader;
 
     }
-
 
     @Bean
     public ItemProcessor<Customer, Customer> getProcessor() {
@@ -83,7 +78,6 @@ public class CustomerCsvImportBatchJob {
 
     }
 
-
     @Bean
     public ItemWriter<Customer> getCsvWriter() {
         RepositoryItemWriter<Customer> repositoryItemWriter = new RepositoryItemWriter<>();
@@ -93,15 +87,12 @@ public class CustomerCsvImportBatchJob {
 
     }
 
-
-
     @Bean
     public Job getCustomerCsvImportBatchJob() {
-        Step firstStep = new StepBuilder("csv-import-step", jobRepository).<Customer, Customer>chunk(10, platformTransactionManager)
+        Step firstStep = new StepBuilder("csv-import-step", jobRepository)
+                .<Customer, Customer>chunk(10, platformTransactionManager)
                 .reader(getCustomerCsvReader()).processor(getProcessor()).writer(getCsvWriter()).build();
         return new JobBuilder("firstJob", jobRepository).start(firstStep).build();
     }
-
-
 
 }

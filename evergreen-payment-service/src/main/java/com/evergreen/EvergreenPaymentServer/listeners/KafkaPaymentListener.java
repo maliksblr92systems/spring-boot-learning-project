@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaPaymentListener {
 
-    @KafkaListener(topics = "payment-topic", groupId = "payment-service", containerFactory = "kafkaCompleteRealtimeListenerContainer")
+    @KafkaListener(topics = "payment-topic", groupId = "payment-service", containerFactory = "kafkaListenerContainer")
     public void listen(String data) {
         System.out.println("payment service listen to topic 'payment-topic' => " + data);
     }

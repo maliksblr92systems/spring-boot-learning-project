@@ -1,4 +1,5 @@
-package com.evergreen.EvergreenAuthServer.dtos.requests.order;
+package com.evergreen.EvergreenPaymentServer.dtos.order;
+
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

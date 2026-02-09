@@ -1,11 +1,13 @@
 package com.evergreen.EvergreenAuthServer.security;
 
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
 import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.evergreen.EvergreenAuthServer.models.AppUserModel;
@@ -18,7 +20,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtService {
 
-    private final static String SECRET_KEY = "ksby871FBLS3ksby871ksby871FBLS3ksby871ksby871FBLS3ksby871";
+    @Value("${jwt.secretKey}")
+    private static String SECRET_KEY;
 
     public SecretKey getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
@@ -30,8 +33,9 @@ public class JwtService {
         claims.put("id", appUser.getEmail());
 
         String userEmail = String.valueOf(appUser.getEmail());
-        return Jwts.builder().claims(claims).subject(userEmail).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis() * 60 * 60 * 30)) // 30 minutes
-                                                                                                                                                                               // expiry
+        return Jwts.builder().claims(claims).subject(userEmail).issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() * 60 * 60 * 30)) // 30 minutes
+                                                                                 // expiry
                 // .and()
                 .signWith(getKey()).compact();
     }

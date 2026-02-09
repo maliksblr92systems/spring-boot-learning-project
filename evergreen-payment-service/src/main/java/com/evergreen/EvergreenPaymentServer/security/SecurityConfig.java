@@ -1,4 +1,4 @@
-package com.evergreen.EvergreenAuthServer.security;
+package com.evergreen.EvergreenPaymentServer.security;
 
 import java.util.List;
 
@@ -21,24 +21,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.evergreen.EvergreenAuthServer.filters.JwtAuthenticationFilter;
-import com.evergreen.EvergreenAuthServer.implementations.AppUserDetailsService;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
-    private AppUserDetailsService appUserDetailsService;
-
-    @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver exceptionResolver;
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(exceptionResolver);
-    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

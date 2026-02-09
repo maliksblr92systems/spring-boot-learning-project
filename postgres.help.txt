@@ -5,8 +5,8 @@ sudo -u postgres psql
 
 DROP DATABASE IF EXISTS evergreen_payment_db;
 CREATE DATABASE evergreen_payment_db;
-GRANT ALL PRIVILEGES ON DATABASE evergreen_payment_db TO evergreen_test_user;
-ALTER DATABASE evergreen_payment_db OWNER TO evergreen_test_user;
+GRANT ALL PRIVILEGES ON DATABASE evergreen_payment_db TO evergreen_user;
+ALTER DATABASE evergreen_payment_db OWNER TO evergreen_user;
 
 
 # cli access 
@@ -17,8 +17,8 @@ ALTER DATABASE evergreen_payment_db OWNER TO evergreen_test_user;
 
 DROP DATABASE IF EXISTS evergreen_test_db;
 CREATE DATABASE evergreen_test_db;
-GRANT ALL PRIVILEGES ON DATABASE evergreen_test_db TO evergreen_test_user;
-ALTER DATABASE evergreen_test_db OWNER TO evergreen_test_user;
+GRANT ALL PRIVILEGES ON DATABASE evergreen_test_db TO evergreen_user;
+ALTER DATABASE evergreen_test_db OWNER TO evergreen_user;
 
 # cli access 
- psql -h localhost -U evergreen_test_user -d evergreen_test_db -W
+ psql -h localhost -U evergreen_user -d evergreen_test_db -W

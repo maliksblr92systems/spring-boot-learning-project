@@ -1,6 +1,9 @@
 package com.evergreen.lib.dtos.product;
 
 import java.time.Instant;
+
+import com.evergreen.lib.dtos.category.CategoryDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
