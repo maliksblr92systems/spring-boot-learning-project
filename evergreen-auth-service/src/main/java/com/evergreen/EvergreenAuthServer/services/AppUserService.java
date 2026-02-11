@@ -1,8 +1,10 @@
 package com.evergreen.EvergreenAuthServer.services;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,12 +20,19 @@ import com.evergreen.EvergreenAuthServer.dtos.responses.UserLoginResponseDto;
 import com.evergreen.EvergreenAuthServer.mappers.AppUserMapper;
 import com.evergreen.EvergreenAuthServer.models.AppUserModel;
 import com.evergreen.EvergreenAuthServer.repositories.AppUserRepository;
-import com.evergreen.EvergreenAuthServer.security.JwtService;
 import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
+import com.evergreen.lib.dtos.appuser.AuthUser;
 import com.evergreen.lib.utils.ApiException;
+import com.evergreen.lib.utils.JwtUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class AppUserService {
+
+    @Value("${jwt.secretKey}")
+    private String SECRET_KEY;
 
     private final AppUserRepository appUserRepository;
 
@@ -34,9 +43,6 @@ public class AppUserService {
     private AppUserMapper appUserMapper;
 
     @Autowired
-    private JwtService jwtService;
-
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public AppUserService(AppUserRepository appUserRepository) {
@@ -44,14 +50,23 @@ public class AppUserService {
     }
 
     public UserLoginResponseDto loginUser(UserLoginRequestDto userLoginDto) {
+
         String password = userLoginDto.getPassword();
         String email = userLoginDto.getEmail();
 
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        CustomUserDetail principal = (CustomUserDetail) auth.getPrincipal();
-        AppUserModel appUser = appUserRepository.findByEmail(principal.getUsername());
+        AppUserModel appUser = appUserRepository.findByEmail(email);
+        if (appUser == null) {
+            throw ApiException.unAuthenticated("User not found " + email + " .");
 
-        String accessToken = jwtService.generateJwtToken(appUser);
+        }
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(appUser.getId(), password));
+        if (!authentication.isAuthenticated()) {
+            throw ApiException.unAuthenticated("Not authenticated");
+        }
+        AuthUser authUser = new AuthUser(appUser.getId(), appUser.getEmail(), List.of());
+        String accessToken = JwtUtils.generateJwtToken2(SECRET_KEY, authUser);
+
         UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto();
         userLoginResponseDto.setUser(appUserMapper.toDto(appUser));
         userLoginResponseDto.setAccessToken(accessToken);
@@ -76,11 +91,13 @@ public class AppUserService {
         newAppUser.setPassword(encodedPassword);
         newAppUser = this.appUserRepository.save(newAppUser);
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(newAppUser.getEmail(), password));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(newAppUser.getId(), password));
         if (!authentication.isAuthenticated()) {
             throw ApiException.unAuthenticated("Not authenticated");
         }
-        String accessToken = jwtService.generateJwtToken(newAppUser);
+        AuthUser authUser = new AuthUser(newAppUser.getId(), newAppUser.getEmail(), List.of());
+
+        String accessToken = JwtUtils.generateJwtToken2(SECRET_KEY, authUser);
         return RegisterUserResponseDto.build(appUserMapper.toDto(newAppUser), accessToken);
 
     }

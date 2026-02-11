@@ -9,4 +9,7 @@ import com.evergreen.EvergreenAuthServer.models.AppUserModel;
 public interface AppUserRepository extends JpaRepository<AppUserModel, Integer> {
 
     AppUserModel findByEmail(String email);
+
+    AppUserModel findById(int id);
+
 }

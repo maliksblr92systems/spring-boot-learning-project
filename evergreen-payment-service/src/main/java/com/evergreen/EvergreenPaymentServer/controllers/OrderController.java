@@ -1,6 +1,7 @@
 package com.evergreen.EvergreenPaymentServer.controllers;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.evergreen.EvergreenPaymentServer.dtos.order.CreateOrderRequestDto;
 import com.evergreen.EvergreenPaymentServer.services.order.IOrderService;
 import com.evergreen.lib.dtos.order.OrderDto;
+
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/v1/payment/order")
 public class OrderController {
 
     private final IOrderService orderService;
-
 
     public OrderController(@Qualifier("orderService") IOrderService orderService) {
         this.orderService = orderService;

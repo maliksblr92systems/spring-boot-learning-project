@@ -1,9 +1,11 @@
 package com.evergreen.EvergreenPaymentServer.models;
 
 import java.time.Instant;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,23 +39,21 @@ public class ProductModel {
     @Column(name = "description", nullable = false)
     private String description;
 
-
     @Column(name = "price", nullable = false)
     private double price;
-
 
     @Column(name = "stock", nullable = false)
     private int stock;
 
-
     @Column(name = "thumbnail", nullable = true)
     private String thumbnail;
-
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "product_category_fk"), nullable = false)
     private CategoryModel category;
 
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private Integer createdBy;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate

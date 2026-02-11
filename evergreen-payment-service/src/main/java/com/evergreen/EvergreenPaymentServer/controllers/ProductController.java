@@ -1,6 +1,7 @@
 package com.evergreen.EvergreenPaymentServer.controllers;
 
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.evergreen.EvergreenPaymentServer.dtos.CreateProductRequestDto;
 import com.evergreen.EvergreenPaymentServer.services.ProductService;
 import com.evergreen.lib.dtos.product.ProductDto;
+
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("/api/v1/payment/product")
 public class ProductController {
 
     private final ProductService productService;

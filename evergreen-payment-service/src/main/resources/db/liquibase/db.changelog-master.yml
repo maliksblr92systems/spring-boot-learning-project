@@ -276,6 +276,14 @@ databaseChangeLog:
               - column:
                   name: thumbnail
                   type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_by
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                  
               - column:
                   name: created_at
                   type: TIMESTAMP
@@ -289,30 +297,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-        - createTable:
-            tableName: shedlock
-            columns:
-              - column:
-                  name: name
-                  type: VARCHAR(64)
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: lock_until
-                  type: TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: locked_at
-                  type: TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: locked_by
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
+       
 
         - createTable:
             tableName: products
@@ -344,6 +329,11 @@ databaseChangeLog:
               - column:
                   name: thumbnail
                   type: VARCHAR(255)
+              - column:
+                  name: created_by
+                  type: INTEGER
+                  constraints:
+                    nullable: false
               - column:
                   name: category_id
                   type: INTEGER
@@ -385,11 +375,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: user_id
-                  type: INTEGER
-                  constraints:
-                    nullable: false
-              - column:
                   name: quantity
                   type: INTEGER
                   constraints:
@@ -397,6 +382,11 @@ databaseChangeLog:
               - column:
                   name: amount
                   type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: INTEGER
                   constraints:
                     nullable: false
               - column:
@@ -419,10 +409,10 @@ databaseChangeLog:
             referencedColumnNames: id
             constraintName: order_product_fk
 
-        - addForeignKeyConstraint:
-            baseTableName: orders
-            baseColumnNames: user_id
-            referencedTableName: users
-            referencedColumnNames: id
-            constraintName: order_user_fk
+        # - addForeignKeyConstraint:
+        #     baseTableName: orders
+        #     baseColumnNames: user_id
+        #     referencedTableName: users
+        #     referencedColumnNames: id
+        #     constraintName: order_user_fk
 

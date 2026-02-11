@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.AntPathMatcher;
@@ -11,9 +12,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.evergreen.EvergreenAuthServer.implementations.AppUserDetailsService;
-import com.evergreen.EvergreenAuthServer.security.JwtService;
+// import com.evergreen.EvergreenAuthServer.security.JwtService;
 import com.evergreen.EvergreenAuthServer.security.dtos.CustomUserDetail;
+import com.evergreen.lib.dtos.appuser.AuthUser;
 import com.evergreen.lib.utils.ApiException;
+import com.evergreen.lib.utils.JwtUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,15 +26,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    @Value("${jwt.secretKey}")
+    private String SECRET_KEY;
+
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    private static final List<String> PUBLIC_PATHS = List.of("/api/v1/auth/login", "/api/v1/auth/register",
-            "/api/v1/jobs/csv/customer", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html");
+    private static final List<String> PUBLIC_PATHS = List.of("/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/jobs/csv/customer", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html");
 
     private HandlerExceptionResolver handlerExceptionResolver;
-
-    @Autowired
-    private JwtService jwtService;
 
     @Autowired
     private AppUserDetailsService appUserDetailsService;
@@ -50,33 +53,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = null;
-        String userEmail = null;
+        String userId = null;
         try {
 
             final String authHeader = request.getHeader("Authorization");
 
             if (authHeader == null) {
-
                 throw ApiException.unAuthenticated("Missing authroziation header.");
             }
+
             if (!authHeader.startsWith("Bearer")) {
                 throw ApiException.unAuthenticated("Invalid access token provided.");
             }
             accessToken = authHeader.substring(7); // skips "Bearer "
 
-            userEmail = jwtService.extractUsername(accessToken);
-            if (userEmail == null || userEmail.isBlank()) {
+            if (accessToken.isBlank() || accessToken.isEmpty()) {
+                throw ApiException.unAuthenticated("Missing access token.");
+            }
+
+            AuthUser authUser = JwtUtils.extractAuthUser(SECRET_KEY, accessToken);
+
+            if (authUser == null) {
                 throw ApiException.unAuthenticated("Invalid access token provided.");
 
             }
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                final CustomUserDetail principal = appUserDetailsService.loadUserByUsername(userEmail);
-                final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal,
-                        null, principal.getAuthorities());
+                final CustomUserDetail principal = appUserDetailsService.loadUserByUsername(authUser.id().toString());
+                final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 

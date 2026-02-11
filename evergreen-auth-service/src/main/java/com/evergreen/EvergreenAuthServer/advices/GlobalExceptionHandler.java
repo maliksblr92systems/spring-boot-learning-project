@@ -13,26 +13,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.evergreen.lib.handlers.EvergreenExceptionHanlder;
 import com.evergreen.lib.utils.ApiError;
-import com.evergreen.lib.utils.ApiException;
-
-import io.jsonwebtoken.security.SignatureException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends EvergreenExceptionHanlder {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<?> handleApiErrorException(ApiException apiException) {
-        final HttpStatus httpStatus = apiException.getHttpStatus();
-        final String error = apiException.getApiError().getError();
-        System.out.println("============================================");
-        System.out.println(error);
-        System.out.println("============================================");
-
-        return new ResponseEntity<>(new ApiError(error), httpStatus);
-    }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleBadCredentialsException(UsernameNotFoundException ex) {
@@ -42,21 +29,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiError(ex.getMessage()));
-
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleException(Exception ex) {
-        log.error("Unhandled exception occurred", ex);
-        return ResponseEntity.internalServerError().body(new ApiError(ex.getMessage()));
-
-    }
-
-    @ExceptionHandler(SignatureException.class)
-    public ResponseEntity<?> handleSignatureException(SignatureException ex) {
-        log.error("Unhandled [SignatureException] occurred", ex);
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiError(ex.getMessage()));
 
     }

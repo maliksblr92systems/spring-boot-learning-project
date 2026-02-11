@@ -14,7 +14,15 @@ clear && ./gradlew lib:clean lib:build  && ./gradlew evergreen-orchestrator-serv
 
 
 clear && ./gradlew evergreen-auth-service:clean evergreen-auth-service:build  
-clear && ./gradlew lib:clean lib:build  && ./gradlew evergreen-auth-service:clean evergreen-auth-service:build  
+clear && ./gradlew evergreen-auth-service:clean evergreen-auth-service:build   evergreen-auth-service:bootRun  
+
+drop database  evergreen_auth_db; create database evergreen_auth_db owner evergreen_user;
 
 
+
+
+clear && ./gradlew evergreen-payment-service:clean evergreen-payment-service:build  
+clear && ./gradlew evergreen-payment-service:clean evergreen-payment-service:build  evergreen-payment-service:bootRun  
+
+drop database  evergreen_pyment_db; create database evergreen_pyment_db owner evergreen_user;
 

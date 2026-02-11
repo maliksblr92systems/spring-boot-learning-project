@@ -1,14 +1,18 @@
 package com.evergreen.EvergreenPaymentServer.services;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.evergreen.EvergreenPaymentServer.repositories.CategoryRepository;
-import com.evergreen.EvergreenPaymentServer.repositories.ProductRepository;
 import com.evergreen.EvergreenPaymentServer.dtos.CreateProductRequestDto;
 import com.evergreen.EvergreenPaymentServer.mappers.ProductMapper;
+import com.evergreen.EvergreenPaymentServer.models.CategoryModel;
 import com.evergreen.EvergreenPaymentServer.models.ProductModel;
+import com.evergreen.EvergreenPaymentServer.repositories.CategoryRepository;
+import com.evergreen.EvergreenPaymentServer.repositories.ProductRepository;
+import com.evergreen.lib.dtos.appuser.AuthUser;
 import com.evergreen.lib.dtos.product.ProductDto;
 import com.evergreen.lib.utils.ApiException;
 
@@ -43,27 +47,29 @@ public class ProductService {
     }
 
     public ProductDto createProduct(CreateProductRequestDto requestDto) {
-        // String name = requestDto.getName();
-        // Optional<Product> productWithNameExists = this.productRepository.findByName(name);
-        // if (productWithNameExists.isPresent()) {
-        //     throw ApiException.badRequest("Product with name " + name + " already exists");
-        // }
+        AuthUser authUser = (AuthUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = requestDto.getName();
+        Optional<ProductModel> productWithNameExists = this.productRepository.findByName(name);
+        if (productWithNameExists.isPresent()) {
+            throw ApiException.badRequest("Product with name " + name + " already exists");
+        }
 
-        // String description = requestDto.getDescription();
-        // int categoryId = requestDto.getCategoryId();
-        // Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> {
-        //     throw ApiException.notFound("Category not found.");
-        // });
-        // Product newProduct = new Product();
-        // newProduct.setCategory(category);
-        // newProduct.setName(name);
-        // newProduct.setDescription(description);
-        // newProduct.setPrice(requestDto.getPrice());
-        // newProduct.setStock(requestDto.getStock());
-        // newProduct = this.productRepository.save(newProduct);
+        String description = requestDto.getDescription();
+        int categoryId = requestDto.getCategoryId();
+        CategoryModel category = this.categoryRepository.findById(categoryId).orElseThrow(() -> {
+            throw ApiException.notFound("Category not found.");
+        });
+        ProductModel newProduct = new ProductModel();
+        newProduct.setCategory(category);
+        newProduct.setName(name);
+        newProduct.setDescription(description);
+        newProduct.setPrice(requestDto.getPrice());
+        newProduct.setStock(requestDto.getStock());
+        newProduct.setCreatedBy(authUser.id());
 
-        // return productMapper.toDto(newProduct);
-        return new ProductDto();
+        newProduct = this.productRepository.save(newProduct);
+
+        return productMapper.toDto(newProduct);
     }
 
 }

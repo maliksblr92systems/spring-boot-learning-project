@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.evergreen.EvergreenPaymentServer.dtos.category.CreateCategoryRequestDto;
 import com.evergreen.EvergreenPaymentServer.dtos.category.UpdateCategoryByIdRequestDto;
-import com.evergreen.EvergreenPaymentServer.services.category.CategoryService;
 import com.evergreen.EvergreenPaymentServer.services.category.ICategoryService;
 import com.evergreen.lib.dtos.category.CategoryDto;
+
 import jakarta.validation.Valid;
-
-
 
 @RestController
 @RequestMapping("/api/v1/payment/category")
@@ -33,7 +31,6 @@ public class CategoryController {
     public CategoryController(ICategoryService categoryService) {
         this.categoryService = categoryService;
     }
-
 
     @PostMapping("")
     public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CreateCategoryRequestDto request) {
@@ -64,7 +61,5 @@ public class CategoryController {
 
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
-
-
 
 }

@@ -1,12 +1,11 @@
 package com.evergreen.EvergreenAuthServer.services.user_activity;
 
-import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityStatus;
-import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityType;
-import com.evergreen.EvergreenAuthServer.models.AppUserModel;
+import java.util.List;
 
+import com.evergreen.lib.dtos.UserActivityDto;
 
 public interface IUserActivityService {
 
-    public void create(AppUserModel user, UserActivityType type, UserActivityStatus status);
+    public List<UserActivityDto> get();
 
 }

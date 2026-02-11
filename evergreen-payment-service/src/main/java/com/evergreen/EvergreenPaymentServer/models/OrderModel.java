@@ -1,10 +1,13 @@
 package com.evergreen.EvergreenPaymentServer.models;
 
 import java.time.Instant;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
 import com.evergreen.lib.entity.BaseEntity;
 import com.evergreen.lib.enums.OrderStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 
 @Table(name = "orders")
 @Entity(name = "orders")
@@ -24,10 +26,8 @@ public class OrderModel extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-    @Column(name = "user_id", nullable = false, updatable = false)
-    private Integer userId;
-
+    // @Column(name = "user_id", nullable = false, updatable = false)
+    // private Integer userId;
 
     @Column(name = "product_id", nullable = false, updatable = false)
     private Integer productId;
@@ -38,7 +38,8 @@ public class OrderModel extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, updatable = false)
     private OrderStatus status;
-
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private Integer createdBy;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
@@ -47,7 +48,5 @@ public class OrderModel extends BaseEntity {
     @Column(name = "updated_at", nullable = false, updatable = true)
     @LastModifiedDate
     private Instant updatedAt;
-
-
 
 }

@@ -1,12 +1,13 @@
 package com.evergreen.EvergreenAuthServer.models;
 
 import java.time.Instant;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityStatus;
-import com.evergreen.EvergreenAuthServer.constants.enums.UserActivityType;
+import com.evergreen.lib.constants.enums.UserActivityStatus;
+import com.evergreen.lib.constants.enums.UserActivityType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,11 +28,11 @@ import lombok.NoArgsConstructor;
 
 @Entity(name = "user_activity")
 @Table(name = "user_activity")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class UserActivity {
+@Data
+@AllArgsConstructor
+public class UserActivityModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +48,6 @@ public class UserActivity {
 
     @Column(name = "status", nullable = false)
     private UserActivityStatus status;
-
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate

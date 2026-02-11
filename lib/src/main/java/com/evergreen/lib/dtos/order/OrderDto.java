@@ -1,6 +1,7 @@
 package com.evergreen.lib.dtos.order;
 
 import java.time.Instant;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +22,13 @@ public class OrderDto {
     private String productName;
     private String productThumbnail;
 
-
     private int quantity;
 
     private double amount;
+    private int createdBy;
 
     private Instant createdAt;
 
     private Instant updatedAt;
-
 
 }

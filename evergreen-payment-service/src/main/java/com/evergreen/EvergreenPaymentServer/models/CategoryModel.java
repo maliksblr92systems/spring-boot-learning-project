@@ -2,9 +2,11 @@ package com.evergreen.EvergreenPaymentServer.models;
 
 import java.time.Instant;
 import java.util.List;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,8 +19,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "categories")
@@ -41,6 +41,9 @@ public class CategoryModel {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<ProductModel> products;
+
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private Integer createdBy;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
