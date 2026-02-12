@@ -27,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${jwt.secretKey}")
-    private String SECRET_KEY;
+    @Value("${jwt.accessToken.secretKey}")
+    private String ACCESS_TOKEN_SECRET;
 
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw ApiException.unAuthenticated("Invalid access token provided.");
             }
             accessToken = authHeader.substring(7); // skips "Bearer "
-            authUser = JwtUtils.extractAuthUser(SECRET_KEY, accessToken);
+            authUser = JwtUtils.extractAuthUser(ACCESS_TOKEN_SECRET, accessToken);
             if (authUser == null) {
                 throw ApiException.unAuthenticated("Invalid access token provided.");
             }

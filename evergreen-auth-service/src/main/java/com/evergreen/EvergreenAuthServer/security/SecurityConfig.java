@@ -55,20 +55,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(Customizer.withDefaults()).csrf((csrf) -> csrf.disable())
-                .httpBasic((basic) -> basic.disable())
+        httpSecurity.csrf(Customizer.withDefaults()).csrf((csrf) -> csrf.disable()).httpBasic((basic) -> basic.disable())
                 // .formLogin((formLogin) -> formLogin.disable())
                 // .anonymous((customizer) -> customizer.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/jobs/csv/customer",
-                                //
-                                "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html")
-                        .permitAll().requestMatchers("/api/v1/**").authenticated()
+                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/v1/auth/refresh", "/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/jobs/csv/customer",
+                        //
+                        "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll().requestMatchers("/api/v1/**").authenticated()
                 // .anyRequest() .permitAll()
 
-                ).authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                ).authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 

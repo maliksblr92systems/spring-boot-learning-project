@@ -27,12 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${jwt.secretKey}")
-    private String SECRET_KEY;
+    @Value("${jwt.accessToken.secretKey}")
+    private String ACCESS_TOKEN_SECRET;
 
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    private static final List<String> PUBLIC_PATHS = List.of("/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/jobs/csv/customer", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html");
+    private static final List<String> PUBLIC_PATHS = List.of("/api/v1/auth/refresh", "/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/jobs/csv/customer", "/swagger-ui/**", "/v3/api-docs/**",
+            "/swagger-ui.html");
 
     private HandlerExceptionResolver handlerExceptionResolver;
 
@@ -49,13 +50,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         final String path = request.getRequestURI();
         final boolean shouldSkip = PUBLIC_PATHS.stream().anyMatch(p -> pathMatcher.match(p, path));
+
         return shouldSkip;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = null;
-        String userId = null;
+        AuthUser authUser = null;
         try {
 
             final String authHeader = request.getHeader("Authorization");
@@ -73,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw ApiException.unAuthenticated("Missing access token.");
             }
 
-            AuthUser authUser = JwtUtils.extractAuthUser(SECRET_KEY, accessToken);
+            authUser = JwtUtils.extractAuthUser(ACCESS_TOKEN_SECRET, accessToken);
 
             if (authUser == null) {
                 throw ApiException.unAuthenticated("Invalid access token provided.");

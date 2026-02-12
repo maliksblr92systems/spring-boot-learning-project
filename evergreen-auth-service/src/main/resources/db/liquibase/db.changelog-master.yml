@@ -400,4 +400,57 @@ databaseChangeLog:
             referencedColumnNames: id
             constraintName: user_activity_user_fk
 
+
+
+  - changeSet:
+      id: 3
+      author: ahmad
+      changes:
+        - createTable:
+            tableName: refresh_tokens
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    updateable: false
+              - column:
+                  name: hash
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    updateable: false
+                    unique: true
+              - column:
+                  name: expiry
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                    updateable: false
+              - column:
+                  name: revoked
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: device_info
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true             
+
+                    
+        - addForeignKeyConstraint:
+            baseTableName: refresh_tokens
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: refresh_tokens_user_fk
+
      
